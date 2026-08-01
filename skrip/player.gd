@@ -5,6 +5,9 @@ const JUMP_POWER = -400.0
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+func  _ready() -> void:
+	SaveManager.load_game()
+	global_position=Global.checkpoint_position
 
 func _physics_process(delta):
 	if not is_on_floor():
@@ -21,3 +24,5 @@ func _physics_process(delta):
 		velocity.x = 0
 
 	move_and_slide()
+	Global.checkpoint_position=global_position
+	SaveManager.save_game()

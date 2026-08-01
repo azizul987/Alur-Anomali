@@ -11,7 +11,7 @@ func set_slot(slot: int) -> void:
 
 func create_new_slot(slot: int) -> void:
 	current_slot = slot
-	write_save_data({"point": 20})
+	write_save_data({"chpos": Vector2.ZERO})
 
 
 func get_save_path() -> String:
@@ -73,8 +73,11 @@ func write_save_data(data: Dictionary) -> void:
 
 func save_game() -> void:
 	var data := read_save_data()
-	#data["point"] = Point.point
-#
+	data["chpos"] = {
+		"x":Global.checkpoint_position.x,
+		"y":Global.checkpoint_position.y
+	}
+
 	#data["skill_tree_camera"]={
 		#"x":Point.skill_tree_camera.x,
 		#"y":Point.skill_tree_camera.y,
@@ -97,7 +100,11 @@ func save_game() -> void:
 
 func load_game() -> void:
 	var data := read_save_data()
-
+	var checkpoint_position=data.get("chpos",Vector2(0,0))
+	Global.checkpoint_position=Vector2(
+		checkpoint_position.x,
+		checkpoint_position.y
+	)
 	#Point.point = float(data.get("point", 0))
 	#var cam_data:Dictionary=data.get("skill_tree_camera",{
 		#"x":0.0,
@@ -109,27 +116,6 @@ func load_game() -> void:
 		#float(cam_data.get("y")),
 		#float(cam_data.get("z"))
 	#)
-	#var cam_data1=data.get("main_camera",{
-		#"x":7347.983,
-		#"y":8094.0,
-		#"z":1
-	#})
-	#Point.main_tree_camera=Vector3(
-		#float(cam_data1.get("x")),
-		#float(cam_data1.get("y")),
-		#float(cam_data1.get("z"))
-	#)
-	
-	#var tipewilayah=data.get("tipe_wilayah",{
-		#"x":0,
-		#"y":0,
-		#"z":1
-	#})
-	#Point.TipeWilayahArray=Vector3i(
-		#int(tipewilayah.get("x")),#prov
-		#int(tipewilayah.get("y")),
-		#int(tipewilayah.get("z"))
-		#)
 
 
 func delete_current_save() -> void:
