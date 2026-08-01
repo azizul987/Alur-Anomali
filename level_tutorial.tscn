@@ -1,0 +1,22 @@
+[gd_scene format=4 uid="uid://bqg82e7vl7umq"]
+
+[ext_resource type="Texture2D" uid="uid://4ktsqa7o345x" path="res://asset/Lantai_tes.png" id="1_r4n2h"]
+[ext_resource type="PackedScene" uid="uid://cbg8go40i77bj" path="res://player.tscn" id="2_n60ys"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n60ys"]
+texture = ExtResource("1_r4n2h")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_hted1"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_n60ys")
+
+[node name="Level_Tutorial" type="Node2D" unique_id=1585397169]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=501592183]
+tile_map_data = PackedByteArray("AAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAAAAAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAD+/wAAAAAAAAAAAAD9/wAAAAAAAAAAAAD8/wAAAAAAAAAAAAD7/wAAAAAAAAAAAAD6/wAAAAAAAAAAAAD5/wAAAAAAAAAAAAD4/wAAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_hted1")
+
+[node name="Player" parent="." unique_id=970081529 instance=ExtResource("2_n60ys")]
+position = Vector2(-61, -54)
