@@ -8,10 +8,10 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready() -> void:
 	SaveManager.load_game()
 	global_position = Global.checkpoint_position
-
+	
 func _physics_process(delta):
 	up_direction = -Global.gravity_direction
-
+	rotation = Vector2.DOWN.angle_to(Global.gravity_direction)
 	if not is_on_floor():
 		velocity += gravity * delta * Global.gravity_direction
 

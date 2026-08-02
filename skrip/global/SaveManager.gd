@@ -77,6 +77,10 @@ func save_game() -> void:
 		"x":Global.checkpoint_position.x,
 		"y":Global.checkpoint_position.y
 	}
+	data["gravity_direction"] = {
+		"x":Global.gravity_direction.x,
+		"y":Global.gravity_direction.y
+	}
 
 	#data["skill_tree_camera"]={
 		#"x":Point.skill_tree_camera.x,
@@ -104,6 +108,11 @@ func load_game() -> void:
 	Global.checkpoint_position=Vector2(
 		checkpoint_position.x,
 		checkpoint_position.y
+	)
+	var gravity_direction=data.get("gravity_direction",Vector2.DOWN)
+	Global.gravity_direction=Vector2(
+		gravity_direction.x,
+		gravity_direction.y
 	)
 	#Point.point = float(data.get("point", 0))
 	#var cam_data:Dictionary=data.get("skill_tree_camera",{
