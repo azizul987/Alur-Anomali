@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://csjp0eg7i68ay" path="res://skrip/platform.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://6118344ojg8m" path="res://asset/brackeys_platformer_assets/sprites/platforms.png" id="3_plattex"]
 [ext_resource type="Texture2D" uid="uid://dk8q00hlnkcp4" path="res://asset/Pixel Adventure 1/Background/Blue.png" id="4_blue_bg"]
+[ext_resource type="PackedScene" path="res://object/checkpoint.tscn" id="5_ckpt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(3200, 40)
@@ -245,9 +246,21 @@ color = Color(0.75, 0.05, 0.85, 1)
 offset_left = 1140.0
 offset_top = -135.0
 offset_right = 2050.0
-offset_bottom = -85.0
-text = "Test 5: Jarak Lompat (3 Tile -> 6 Tile -> 8 Tile -> 9 Tile -> 10 Tile 
-1"
+text = "Test 5: Jarak Lompat (3 Tile -> 6 Tile -> 8 Tile -> 9 Tile -> 10 Tile)"
+
+[node name="Test_Checkpoint_1" parent="." unique_id=883399221 instance=ExtResource("5_ckpt")]
+position = Vector2(1080, -8)
+
+[node name="Test_Checkpoint_2" parent="." unique_id=991188332 instance=ExtResource("5_ckpt")]
+position = Vector2(2100, -8)
+
+[node name="Label_Checkpoint" type="Label" parent="." unique_id=776655443]
+offset_left = 1040.0
+offset_top = -175.0
+offset_right = 1600.0
+offset_bottom = -125.0
+text = "Test 6: Checkpoint (Bendera Merdeka!)
+Sentuh bendera sebelum lompat, jika jatuh akan ter-respawn ke titik ini!"
 
 [connection signal="body_entered" from="Test_Trampoline/Area2D" to="Test_Trampoline" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Test_Disappear/Area2D" to="Test_Disappear" method="_on_area_2d_body_entered"]
