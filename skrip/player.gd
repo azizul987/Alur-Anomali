@@ -6,10 +6,12 @@ const JUMP_POWER = 400.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var coyote_timer: float = 0.0
 var jump_buffer: float = 0.0
+var start_position: Vector2
 
 func _ready() -> void:
 	SaveManager.load_game()
 	global_position = Global.checkpoint_position
+	start_position = global_position
 	
 func _physics_process(delta):
 	up_direction = -Global.gravity_direction
@@ -47,5 +49,7 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-	Global.checkpoint_position = global_position
-	SaveManager.save_game()
+	# Kembali ke posisi awal jika jatuh melewati batas Y (jurang/void)
+	if global_position.y > 400.0:
+		global_position = start_position
+		velocity = Vector2.ZERO

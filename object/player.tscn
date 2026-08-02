@@ -180,7 +180,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sh265"]
-height = 36.0
+radius = 8.0
+height = 26.0
 
 [node name="Player" type="CharacterBody2D" unique_id=970081529]
 script = ExtResource("1_onrkg")
@@ -196,6 +197,7 @@ frame_progress = 0.3667847
 shape = SubResource("CapsuleShape2D_sh265")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=288018455]
+zoom = Vector2(2.5, 2.5)
 
 [node name="JumpSound" type="AudioStreamPlayer2D" parent="." unique_id=1928374650]
 stream = ExtResource("4_jumpsnd")
