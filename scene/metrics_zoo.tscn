@@ -16,13 +16,13 @@ size = Vector2(40, 80)
 
 [node name="MetricsZoo" type="Node2D" unique_id=500351051]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1113745922]
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=916956867]
 motion_scale = Vector2(0.3, 0.3)
 motion_mirroring = Vector2(1280, 720)
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1048963823]
 texture_repeat = 2
 texture = ExtResource("4_blue_bg")
 centered = false

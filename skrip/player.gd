@@ -11,9 +11,9 @@ func _ready() -> void:
 	start_position = global_position
 	
 func _physics_process(delta):
-	# --- MEKANIK METRONOME (Order: Stabil/Lambat vs Disorder: Cepat/Tinggi) ---
-	var speed = 150.0 if Global.is_order_phase else 260.0
-	var jump_power = 340.0 if Global.is_order_phase else 480.0
+	# --- MEKANIK METRONOME (Order: Presisi Normal vs Disorder: Ngebut & Lompat Tinggi) ---
+	var speed = 220.0 if Global.is_order_phase else 280.0
+	var jump_power = 420.0 if Global.is_order_phase else 500.0
 
 	up_direction = -Global.gravity_direction
 	rotation = Vector2.DOWN.angle_to(Global.gravity_direction)

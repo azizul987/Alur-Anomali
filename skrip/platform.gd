@@ -13,6 +13,8 @@ func _ready() -> void:
 	origin_pos = position
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.one_way_collision = one_way
+	if has_node("Area2D") and not $Area2D.body_entered.is_connected(_on_area_2d_body_entered):
+		$Area2D.body_entered.connect(_on_area_2d_body_entered)
 
 func _physics_process(_delta: float) -> void:
 	# Mekanik Metronome: Pilih rute Order (stabil) atau Disorder (melayang/kacau)
