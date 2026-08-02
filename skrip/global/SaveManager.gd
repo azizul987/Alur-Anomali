@@ -104,7 +104,7 @@ func save_game() -> void:
 
 func load_game() -> void:
 	var data := read_save_data()
-	var checkpoint_position=data.get("chpos",Vector2(0,0))
+	var checkpoint_position=data.get("chpos",Vector2(0,20))
 	Global.checkpoint_position=Vector2(
 		checkpoint_position.x,
 		checkpoint_position.y

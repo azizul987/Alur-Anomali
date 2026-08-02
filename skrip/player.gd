@@ -19,6 +19,11 @@ func _physics_process(delta):
 		velocity -= Global.gravity_direction * JUMP_POWER
 
 	var direction = Input.get_axis("ui_left", "ui_right")
+	if direction != 0:
+		$Sprite2D.play("Run")
+		$Sprite2D.flip_h = direction < 0
+	else:
+		$Sprite2D.play("Idle")
 
 	# Gravitasi kiri atau kanan.
 	if Global.gravity_direction.x != 0:

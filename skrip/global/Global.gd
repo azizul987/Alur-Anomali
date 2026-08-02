@@ -11,4 +11,5 @@ func  _input(event: InputEvent) -> void:
 	if  event.is_action_pressed("change_grav") and Debug.is_active():
 		Global.gravity_direction = Global.gravity_direction.rotated(PI / 2.0).round()
 	if event.is_action_pressed("reset_save"):
+		print("wasasa")
 		SaveManager.delete_current_save()
