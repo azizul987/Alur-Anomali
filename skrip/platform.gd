@@ -1,8 +1,9 @@
 extends AnimatableBody2D
 
 @export var one_way: bool = true
-@export var move_offset: Vector2 = Vector2.ZERO # Isi misal (150, 0) untuk gerak kanan-kiri
-@export var move_duration: float = 2.0
+@export var move_offset: Vector2 = Vector2.ZERO # Rute saat ORDER (Stabil, misal horizontal)
+@export var disorder_offset: Vector2 = Vector2.ZERO # Rute saat DISORDER (Kacau/Melayang atas)
+@export var move_speed: float = 2.0 # Kecepatan ayunan
 @export var bounce_power: float = 0.0 # Isi misal 600.0 untuk jadi trampolin
 @export var disappear_on_touch: bool = false # Centang jika ingin hancur saat diinjak & muncul lagi
 
@@ -10,15 +11,15 @@ var origin_pos: Vector2
 
 func _ready() -> void:
 	origin_pos = position
-	# 1. Atur kolisi satu arah dari bawah (One-Way)
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.one_way_collision = one_way
-		
-	# 2. Gerak bolak-balik otomatis (Tween) jika move_offset diisi
-	if move_offset != Vector2.ZERO:
-		var tween = create_tween().set_loops()
-		tween.tween_property(self, "position", origin_pos + move_offset, move_duration).set_trans(Tween.TRANS_SINE)
-		tween.tween_property(self, "position", origin_pos, move_duration).set_trans(Tween.TRANS_SINE)
+
+func _physics_process(_delta: float) -> void:
+	# Mekanik Metronome: Pilih rute Order (stabil) atau Disorder (melayang/kacau)
+	var target_offset = move_offset if Global.is_order_phase else disorder_offset
+	if target_offset != Vector2.ZERO or position.distance_to(origin_pos) > 1.0:
+		var target = origin_pos + target_offset * sin(Time.get_ticks_msec() * 0.001 * move_speed)
+		position = position.lerp(target, 0.1)
 
 # Hubungkan sinyal "body_entered" dari node Area2D di platform ke fungsi ini
 func _on_area_2d_body_entered(body: Node2D) -> void:

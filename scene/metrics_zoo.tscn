@@ -139,6 +139,7 @@ text = "Test 3: Lantai Runtuh
 position = Vector2(850, -40)
 script = ExtResource("2_script")
 move_offset = Vector2(150, 0)
+disorder_offset = Vector2(0, -120)
 
 [node name="Sprite2D" type="Sprite2D" parent="Test_Moving" unique_id=1660338283]
 texture = ExtResource("3_plattex")
@@ -155,12 +156,12 @@ position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_plat")
 
 [node name="Label_Moving" type="Label" parent="." unique_id=300186217]
-offset_left = 850.0
+offset_left = 830.0
 offset_top = -95.0
-offset_right = 1000.0
+offset_right = 1050.0
 offset_bottom = -45.0
-text = "Test 4: Lantai Gerak
-(Bolak-balik X+150)"
+text = "Test 4: Lantai Metronome
+(Order: Kanan-Kiri | Disorder: Naik ke Atas!)"
 
 [node name="Pillar_Start" type="StaticBody2D" parent="." unique_id=1466219540]
 position = Vector2(1150, -40)
