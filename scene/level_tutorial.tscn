@@ -270,3 +270,5 @@ frame_progress = 0.0073821344
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1599225275]
 shape = SubResource("CircleShape2D_njpbr")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=65846252]
