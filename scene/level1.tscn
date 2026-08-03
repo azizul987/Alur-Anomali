@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://d0bxgw2ahqh7h" path="res://asset/Pixel Adventure 1/Terrain/Terrain (16x16).png" id="2_ebr37"]
 [ext_resource type="PackedScene" uid="uid://cd5wab2mnru77" path="res://scene/platform.tscn" id="3_3ud3r"]
 [ext_resource type="PackedScene" uid="uid://cbg8go40i77bj" path="res://object/player.tscn" id="4_ldwqa"]
-[ext_resource type="Texture2D" uid="uid://dk8q00hlnkcp4" path="res://asset/Pixel Adventure 1/Background/Blue.png" id="5_kjjd3"]
+[ext_resource type="Texture2D" uid="uid://d2763iuft8b1h" path="res://asset/bg_sky2.png" id="5_kjjd3"]
 [ext_resource type="Texture2D" uid="uid://b85ekehus2pcc" path="res://asset/brackeys_platformer_assets/sprites/slime_green.png" id="6_e6f45"]
+[ext_resource type="Script" uid="uid://dkddfptbip8ab" path="res://skrip/dynamic_bg.gd" id="7_dynbg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n60ys"]
 texture = ExtResource("1_a215g")
@@ -243,15 +244,15 @@ position = Vector2(-61, -54)
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=2122130079]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=810473212]
-motion_scale = Vector2(0.3, 0.3)
-motion_mirroring = Vector2(1280, 720)
+motion_scale = Vector2(0.3, 0)
+motion_mirroring = Vector2(768, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=783466719]
 texture_repeat = 2
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("5_kjjd3")
 centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 1280, 720)
+script = ExtResource("7_dynbg")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=829013948]
 position = Vector2(132, 16)

@@ -3,8 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://cbg8go40i77bj" path="res://object/player.tscn" id="1_player"]
 [ext_resource type="Script" uid="uid://csjp0eg7i68ay" path="res://skrip/platform.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://6118344ojg8m" path="res://asset/brackeys_platformer_assets/sprites/platforms.png" id="3_plattex"]
-[ext_resource type="Texture2D" uid="uid://dk8q00hlnkcp4" path="res://asset/Pixel Adventure 1/Background/Blue.png" id="4_blue_bg"]
+[ext_resource type="Texture2D" uid="uid://ig2ur608jau8" path="res://asset/bg_sky1.png" id="5_1uvaj"]
 [ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="5_ckpt"]
+[ext_resource type="Script" uid="uid://dkddfptbip8ab" path="res://skrip/dynamic_bg.gd" id="6_khhmp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(3979, 40)
@@ -16,19 +17,6 @@ size = Vector2(32, 10)
 size = Vector2(40, 80)
 
 [node name="MetricsZoo" type="Node2D" unique_id=500351051]
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1113745922]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=916956867]
-motion_scale = Vector2(0.3, 0.3)
-motion_mirroring = Vector2(1280, 720)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1048963823]
-texture_repeat = 2
-texture = ExtResource("4_blue_bg")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 1280, 720)
 
 [node name="Player" parent="." unique_id=1277304011 instance=ExtResource("1_player")]
 position = Vector2(0, -60)
@@ -390,6 +378,20 @@ offset_bottom = -70.0
 text = "Test 12: Falling Platform (Jingga)
 Diinjak langsung jatuh, tapi KETIK JATUH
 pemain TETAP BISA LOMPAT penyelamatan!"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1929512156]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1659560294]
+motion_scale = Vector2(0.3, 0.3)
+motion_mirroring = Vector2(1280, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=98009866]
+texture_repeat = 2
+texture = ExtResource("5_1uvaj")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 720)
+script = ExtResource("6_khhmp")
 
 [connection signal="body_entered" from="Test_Trampoline/Area2D" to="Test_Trampoline" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Test_Disappear/Area2D" to="Test_Disappear" method="_on_area_2d_body_entered"]
