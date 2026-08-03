@@ -1,18 +1,35 @@
 extends AnimatableBody2D
 
+enum TipePlatform {
+	NORMAL = 0,
+	PENDULUM = 1,
+	SHADOW_DISORDER = 2,
+	ICE_SURFACE = 3,
+	MEMORY_REWIND = 4,
+	FALL_ON_TOUCH = 5,
+	DISAPPEAR_ON_TOUCH = 6
+}
+
+@export_group("Dropdown Pilihan Tipe Platform")
+## Pilih tipe platform menggunakan menu Dropdown murni di bawah ini:
+@export var tipe_dropdown: TipePlatform = TipePlatform.NORMAL
+
+@export_group("Pengaturan Fisika & Parameter")
 @export var one_way: bool = true
 @export var move_offset: Vector2 = Vector2.ZERO # Rute saat ORDER (Stabil, misal horizontal)
 @export var disorder_offset: Vector2 = Vector2.ZERO # Rute saat DISORDER (Kacau/Melayang atas)
 @export var move_speed: float = 2.0 # Kecepatan ayunan
 @export var bounce_power: float = 0.0 # Isi misal 600.0 untuk jadi trampolin
-@export var disappear_on_touch: bool = false # Centang jika ingin hancur saat diinjak & muncul lagi
-@export var is_pendulum: bool = false # Ayunan jam metronom
-@export var shadow_on_disorder: bool = false # Nyata saat Order, tembus (bayangan) saat Disorder
 @export var orbit_radius: float = 0.0 # Berputar 360 derajat mengitari titik awal
 @export var conveyor_speed: float = 0.0 # Ban berjalan / angin pendorong
-@export var is_ice: bool = false # Permukaan es licin (dicek oleh player.gd)
-@export var is_memory_rewind: bool = false # Merekam rute lalu rewind mundur saat fase Order
-@export var fall_on_touch: bool = false # Jatuh saat diinjak namun pemain tetap berhak melompat
+
+@export_group("Opsi Manual (Checklist Alternatif)")
+@export var disappear_on_touch: bool = false
+@export var is_pendulum: bool = false
+@export var shadow_on_disorder: bool = false
+@export var is_ice: bool = false
+@export var is_memory_rewind: bool = false
+@export var fall_on_touch: bool = false
 
 var origin_pos: Vector2
 var history: Array[Vector2] = []
@@ -20,6 +37,15 @@ var cur_angle: float = 0.0
 var is_falling: bool = false
 
 func _ready() -> void:
+	# Sinkronisasi dari menu Dropdown murni ke logika sistem:
+	match tipe_dropdown:
+		TipePlatform.PENDULUM: is_pendulum = true
+		TipePlatform.SHADOW_DISORDER: shadow_on_disorder = true
+		TipePlatform.ICE_SURFACE: is_ice = true
+		TipePlatform.MEMORY_REWIND: is_memory_rewind = true
+		TipePlatform.FALL_ON_TOUCH: fall_on_touch = true
+		TipePlatform.DISAPPEAR_ON_TOUCH: disappear_on_touch = true
+
 	origin_pos = position
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.one_way_collision = one_way

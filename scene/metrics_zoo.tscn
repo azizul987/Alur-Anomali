@@ -265,7 +265,7 @@ Sentuh bendera sebelum lompat, jika jatuh akan ter-respawn ke titik ini!"
 [node name="Test_Pendulum" type="AnimatableBody2D" parent="." unique_id=711223344]
 position = Vector2(2250, -50)
 script = ExtResource("2_script")
-is_pendulum = true
+tipe_dropdown = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Test_Pendulum" unique_id=722334455]
 texture = ExtResource("3_plattex")

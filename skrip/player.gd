@@ -4,6 +4,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var coyote_timer: float = 0.0
 var jump_buffer: float = 0.0
 var jump_count: int = 0
+var air_dash_used: bool = false
+var dash_timer: float = 0.0
 var start_position: Vector2
 
 func _ready() -> void:
@@ -12,11 +14,14 @@ func _ready() -> void:
 	start_position = global_position
 	
 func _physics_process(delta):
-	if is_on_floor(): jump_count = 0
+	if is_on_floor():
+		jump_count = 0
+		air_dash_used = false
+		dash_timer = 0.0
 
 	# --- MEKANIK METRONOME (Order: Normal vs Disorder: Lompat 1.1x & Laju 1.8x) ---
 	var speed = 205.0 * (1.0 if Global.is_order_phase else 1.8) # Laju 1.8x di Disorder
-	var jump_power = 260.0 * (1.0 if Global.is_order_phase else 1.1) # Kekuatan lompat dibagi 2 demi Double Jump!
+	var jump_power = 270.0 * (1.0 if Global.is_order_phase else 1.1) # Kekuatan lompat dibagi 2 demi Double Jump!
 
 	up_direction = -Global.gravity_direction
 	rotation = Vector2.DOWN.angle_to(Global.gravity_direction)
@@ -53,7 +58,12 @@ func _physics_process(delta):
 				conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
 
 	var dash_pressed = Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_X) or Input.is_key_pressed(KEY_C)
-	var is_dash = dash_pressed and jump_count >= 2 and not is_on_floor() # Dash HANYA bisa aktif usai lompatan KEDUA!
+	if dash_pressed and jump_count >= 2 and not is_on_floor() and not air_dash_used:
+		air_dash_used = true # Kunci agar tidak bisa double dash beruntun di udara!
+		dash_timer = 0.25 # Durasi melesat cepat selama 0.25 detik
+
+	if dash_timer > 0: dash_timer -= delta
+	var is_dash = dash_timer > 0
 	var mult = 1.0
 	if is_dash: mult = 2.0 if Global.is_order_phase else 2.6 # Kecepatan melesat dash sesudah double jump!
 
