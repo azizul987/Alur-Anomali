@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://csjp0eg7i68ay" path="res://skrip/platform.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://6118344ojg8m" path="res://asset/brackeys_platformer_assets/sprites/platforms.png" id="3_plattex"]
 [ext_resource type="Texture2D" uid="uid://dk8q00hlnkcp4" path="res://asset/Pixel Adventure 1/Background/Blue.png" id="4_blue_bg"]
-[ext_resource type="PackedScene" path="res://object/checkpoint.tscn" id="5_ckpt"]
+[ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="5_ckpt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(3200, 40)
+size = Vector2(3979, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_plat"]
 size = Vector2(32, 10)
@@ -37,12 +37,13 @@ position = Vector2(0, -60)
 position = Vector2(800, 20)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LantaiDasar_Aman" unique_id=259046884]
+position = Vector2(389.5, 0)
 shape = SubResource("RectangleShape2D_floor")
 
 [node name="ColorRect" type="ColorRect" parent="LantaiDasar_Aman" unique_id=2082922240]
 offset_left = -1000.0
 offset_top = -20.0
-offset_right = 2200.0
+offset_right = 2386.0
 offset_bottom = 20.0
 color = Color(0.2, 0.26, 0.32, 1)
 
@@ -258,9 +259,138 @@ position = Vector2(2100, -8)
 offset_left = 1040.0
 offset_top = -175.0
 offset_right = 1600.0
-offset_bottom = -125.0
 text = "Test 6: Checkpoint (Bendera Merdeka!)
 Sentuh bendera sebelum lompat, jika jatuh akan ter-respawn ke titik ini!"
 
+[node name="Test_Pendulum" type="AnimatableBody2D" parent="." unique_id=711223344]
+position = Vector2(2250, -50)
+script = ExtResource("2_script")
+is_pendulum = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Pendulum" unique_id=722334455]
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Pendulum" unique_id=733445566]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Test_Shadow" type="AnimatableBody2D" parent="." unique_id=811223344]
+position = Vector2(2450, -50)
+script = ExtResource("2_script")
+shadow_on_disorder = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Shadow" unique_id=822334455]
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 16, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Shadow" unique_id=833445566]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Label_Pendulum_Shadow" type="Label" parent="." unique_id=911223344]
+offset_left = 2200.0
+offset_top = -140.0
+offset_right = 2650.0
+offset_bottom = -80.0
+text = "Test 7: Pendulum (Kiri) & Shadow Platform (Kanan)
+Order: Ayunan santai | Platform Shadow padat
+Disorder: Ayunan liar kencang | Shadow jadi ilusi tembus!"
+
+[node name="Test_Orbit" type="AnimatableBody2D" parent="." unique_id=112233441]
+position = Vector2(2650, -60)
+script = ExtResource("2_script")
+orbit_radius = 50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Orbit" unique_id=112233442]
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Orbit" unique_id=112233443]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Test_Conveyor" type="AnimatableBody2D" parent="." unique_id=223344551]
+position = Vector2(2800, -20)
+script = ExtResource("2_script")
+conveyor_speed = 100.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Conveyor" unique_id=223344552]
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 16, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Conveyor" unique_id=223344553]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Test_Ice" type="AnimatableBody2D" parent="." unique_id=334455661]
+position = Vector2(2950, 0)
+script = ExtResource("2_script")
+is_ice = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Ice" unique_id=334455662]
+modulate = Color(0.4, 0.8, 1, 1)
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Ice" unique_id=334455663]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Test_Memory" type="AnimatableBody2D" parent="." unique_id=445566771]
+position = Vector2(3100, -40)
+script = ExtResource("2_script")
+disorder_offset = Vector2(0, -100)
+is_memory_rewind = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Memory" unique_id=445566772]
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Memory" unique_id=445566773]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Label_NewMechanics" type="Label" parent="." unique_id=556677881]
+offset_left = 2600.0
+offset_top = -160.0
+offset_right = 3200.0
+offset_bottom = -80.0
+text = "Test 8-11: Orbit -> Conveyor -> Ice (Biru) -> Memory Rewind
+- Orbit: Putaran terbalik kencang saat Disorder!
+- Conveyor: Arus berbalik saat Disorder!
+- Ice (Lantai Biru): Licin melampar kencang saat Disorder!
+- Memory: Aktif ke atas saat Disorder, Rewind saat Order!"
+
+[node name="Test_Falling" type="AnimatableBody2D" parent="." unique_id=778899001]
+position = Vector2(3250, -30)
+script = ExtResource("2_script")
+fall_on_touch = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Test_Falling" unique_id=778899002]
+modulate = Color(1, 0.6, 0.2, 1)
+texture = ExtResource("3_plattex")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Falling" unique_id=778899003]
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Area2D" type="Area2D" parent="Test_Falling" unique_id=778899004]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test_Falling/Area2D" unique_id=778899005]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_plat")
+
+[node name="Label_Falling" type="Label" parent="." unique_id=778899006]
+offset_left = 3180.0
+offset_top = -120.0
+offset_right = 3500.0
+offset_bottom = -70.0
+text = "Test 12: Falling Platform (Jingga)
+Diinjak langsung jatuh, tapi KETIK JATUH
+pemain TETAP BISA LOMPAT penyelamatan!"
+
 [connection signal="body_entered" from="Test_Trampoline/Area2D" to="Test_Trampoline" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Test_Disappear/Area2D" to="Test_Disappear" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Test_Falling/Area2D" to="Test_Falling" method="_on_area_2d_body_entered"]

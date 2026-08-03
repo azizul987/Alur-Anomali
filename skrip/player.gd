@@ -3,6 +3,7 @@ extends CharacterBody2D
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var coyote_timer: float = 0.0
 var jump_buffer: float = 0.0
+var jump_count: int = 0
 var start_position: Vector2
 
 func _ready() -> void:
@@ -11,22 +12,25 @@ func _ready() -> void:
 	start_position = global_position
 	
 func _physics_process(delta):
-	# --- MEKANIK METRONOME (Order: Presisi Normal vs Disorder: Ngebut & Lompat Tinggi) ---
-	var speed = 220.0 if Global.is_order_phase else 280.0
-	var jump_power = 420.0 if Global.is_order_phase else 500.0
+	if is_on_floor(): jump_count = 0
+
+	# --- MEKANIK METRONOME (Order: Normal vs Disorder: Lompat 1.1x & Laju 1.8x) ---
+	var speed = 205.0 * (1.0 if Global.is_order_phase else 1.8) # Laju 1.8x di Disorder
+	var jump_power = 260.0 * (1.0 if Global.is_order_phase else 1.1) # Kekuatan lompat dibagi 2 demi Double Jump!
 
 	up_direction = -Global.gravity_direction
 	rotation = Vector2.DOWN.angle_to(Global.gravity_direction)
 	if not is_on_floor():
 		velocity += gravity * delta * Global.gravity_direction
 
-	# --- 3 FITUR PEMAAFAN GERAKAN MODERN ---
+	# --- FITUR DOUBLE JUMP & PEMAAFAN GERAKAN MODERN ---
 	coyote_timer = 0.15 if is_on_floor() else coyote_timer - delta
 	jump_buffer = 0.1 if Input.is_action_just_pressed("jump") else jump_buffer - delta
 
-	if jump_buffer > 0 and coyote_timer > 0:
-		velocity -= Global.gravity_direction * jump_power
-		coyote_timer = 0.0; jump_buffer = 0.0 # Reset agar tidak lompat ganda
+	if jump_buffer > 0 and (coyote_timer > 0 or jump_count < 2):
+		velocity.y = -jump_power
+		jump_count = 1 if (coyote_timer > 0) else 2
+		coyote_timer = 0.0; jump_buffer = 0.0 # Reset agar tidak lompat ganda berlebih
 		$JumpSound.play() # Putar efek suara lompat
 
 	if Input.is_action_just_released("jump") and velocity.dot(Global.gravity_direction) < 0:
@@ -39,14 +43,31 @@ func _physics_process(delta):
 	else:
 		$Sprite2D.play("Idle")
 
-	if Global.gravity_direction.x != 0:
-		velocity.y = direction * speed
-	else:
-		velocity.x = direction * speed
+	var on_ice = false
+	var conveyor_push = 0.0
+	for i in get_slide_collision_count():
+		var col = get_slide_collision(i).get_collider()
+		if col:
+			if "is_ice" in col and col.is_ice: on_ice = true
+			if "conveyor_speed" in col and col.conveyor_speed != 0:
+				conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
 
-	# Fitur DASH: HANYA Aktif di Fase Disorder! (Tekan X atau C di udara)
-	if not Global.is_order_phase and (Input.is_key_pressed(KEY_X) or Input.is_key_pressed(KEY_C)) and not is_on_floor():
-		velocity.x = (speed * 2.5) * (-1 if $Sprite2D.flip_h else 1)
+	var dash_pressed = Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_X) or Input.is_key_pressed(KEY_C)
+	var is_dash = dash_pressed and jump_count >= 2 and not is_on_floor() # Dash HANYA bisa aktif usai lompatan KEDUA!
+	var mult = 1.0
+	if is_dash: mult = 2.0 if Global.is_order_phase else 2.6 # Kecepatan melesat dash sesudah double jump!
+
+	if Global.gravity_direction.x != 0:
+		velocity.y = direction * speed * mult + conveyor_push
+	elif not Global.is_order_phase and on_ice:
+		velocity.x = move_toward(velocity.x, direction * (speed * 1.8) + conveyor_push, 4.0)
+	else:
+		velocity.x = direction * speed * mult + conveyor_push
+
+	# Batasi laju horizontal saat di udara HANYA JIKA TIDAK sedang menekan tombol Dash
+	if not is_on_floor() and not is_dash and Global.gravity_direction.y != 0:
+		var max_air = 235.0 if Global.is_order_phase else 265.0
+		velocity.x = clamp(velocity.x, -max_air, max_air)
 
 	move_and_slide()
 
