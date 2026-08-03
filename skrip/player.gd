@@ -14,6 +14,19 @@ func _ready() -> void:
 	start_position = global_position
 	
 func _physics_process(delta):
+	# --- FITUR ADMIN / DEV FLY MODE (NO-CLIP / BEBAS TERBANG & TEMBUS KETIKA TEST LEVEL) ---
+	if Debug.is_active() and Debug.fly_mode:
+		var fly_dir = Vector2.ZERO
+		if Input.is_action_pressed("ui_left") or Input.is_key_pressed(KEY_A): fly_dir.x -= 1
+		if Input.is_action_pressed("ui_right") or Input.is_key_pressed(KEY_D): fly_dir.x += 1
+		if Input.is_action_pressed("ui_up") or Input.is_key_pressed(KEY_W): fly_dir.y -= 1
+		if Input.is_action_pressed("ui_down") or Input.is_key_pressed(KEY_S): fly_dir.y += 1
+		
+		var fly_speed = 450.0 * (2.5 if (Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_X)) else 1.0)
+		position += fly_dir.normalized() * fly_speed * delta
+		velocity = Vector2.ZERO
+		return # Abaikan gravitasi & tabrakan demi meluncur bebas mengelilingi level!
+
 	if is_on_floor():
 		jump_count = 0
 		air_dash_used = false
@@ -56,6 +69,7 @@ func _physics_process(delta):
 			if "is_ice" in col and col.is_ice: on_ice = true
 			if "conveyor_speed" in col and col.conveyor_speed != 0:
 				conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
+			if "has_been_touched" in col: col.has_been_touched = true
 
 	var dash_pressed = Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_X) or Input.is_key_pressed(KEY_C)
 	if dash_pressed and jump_count >= 2 and not is_on_floor() and not air_dash_used:
@@ -63,9 +77,10 @@ func _physics_process(delta):
 		dash_timer = 0.25 # Durasi melesat cepat selama 0.25 detik
 
 	if dash_timer > 0: dash_timer -= delta
-	var is_dash = dash_timer > 0
+	# Di atas lantai bisa lari cepat (sprint/dash) bebas, sedangkan di udara wajib mematuhi timer air dash!
+	var is_dash = (dash_pressed and is_on_floor()) or (dash_timer > 0)
 	var mult = 1.0
-	if is_dash: mult = 2.0 if Global.is_order_phase else 2.6 # Kecepatan melesat dash sesudah double jump!
+	if is_dash: mult = 2.0 if Global.is_order_phase else 2.6 # Kecepatan melaju dash darat maupun udara!
 
 	if Global.gravity_direction.x != 0:
 		velocity.y = direction * speed * mult + conveyor_push

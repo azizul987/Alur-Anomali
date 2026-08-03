@@ -7,7 +7,9 @@ enum TipePlatform {
 	ICE_SURFACE = 3,
 	MEMORY_REWIND = 4,
 	FALL_ON_TOUCH = 5,
-	DISAPPEAR_ON_TOUCH = 6
+	DISAPPEAR_ON_TOUCH = 6,
+	MOVE_ON_TOUCH = 7,
+	SHIFT_ON_MODE = 8
 }
 
 @export_group("Dropdown Pilihan Tipe Platform")
@@ -18,7 +20,7 @@ enum TipePlatform {
 @export var one_way: bool = true
 @export var move_offset: Vector2 = Vector2.ZERO # Rute saat ORDER (Stabil, misal horizontal)
 @export var disorder_offset: Vector2 = Vector2.ZERO # Rute saat DISORDER (Kacau/Melayang atas)
-@export var move_speed: float = 2.0 # Kecepatan ayunan
+@export var move_speed: float = 2.0 # Kecepatan ayunan / pergeseran
 @export var bounce_power: float = 0.0 # Isi misal 600.0 untuk jadi trampolin
 @export var orbit_radius: float = 0.0 # Berputar 360 derajat mengitari titik awal
 @export var conveyor_speed: float = 0.0 # Ban berjalan / angin pendorong
@@ -30,11 +32,15 @@ enum TipePlatform {
 @export var is_ice: bool = false
 @export var is_memory_rewind: bool = false
 @export var fall_on_touch: bool = false
+@export var move_on_touch: bool = false
+@export var shift_on_mode: bool = false
 
 var origin_pos: Vector2
 var history: Array[Vector2] = []
 var cur_angle: float = 0.0
 var is_falling: bool = false
+var has_been_touched: bool = false
+var move_timer: float = 0.0
 
 func _ready() -> void:
 	# Sinkronisasi dari menu Dropdown murni ke logika sistem:
@@ -45,6 +51,8 @@ func _ready() -> void:
 		TipePlatform.MEMORY_REWIND: is_memory_rewind = true
 		TipePlatform.FALL_ON_TOUCH: fall_on_touch = true
 		TipePlatform.DISAPPEAR_ON_TOUCH: disappear_on_touch = true
+		TipePlatform.MOVE_ON_TOUCH: move_on_touch = true
+		TipePlatform.SHIFT_ON_MODE: shift_on_mode = true
 
 	origin_pos = position
 	if has_node("CollisionShape2D"):
@@ -80,16 +88,25 @@ func _physics_process(_delta: float) -> void:
 	elif is_memory_rewind and history.size() > 0:
 		position = history.pop_back(); return # Hentikan gerakan biasa demi rewind mundur!
 
-	# 6. Mekanik Moving Platform Metronome: Pilih rute Order atau Disorder
-	if move_offset != Vector2.ZERO or disorder_offset != Vector2.ZERO:
-		var target_offset = move_offset if Global.is_order_phase else disorder_offset
-		var target = origin_pos + target_offset * sin(Time.get_ticks_msec() * 0.001 * move_speed)
-		position = position.lerp(target, 0.1)
+	# 6. Mekanik Shift Pada Pergantian Mode (Diam di Posisi A saat Order, Bergeser tegap ke Posisi B saat Disorder)
+	if shift_on_mode:
+		var target_pos = origin_pos + (move_offset if Global.is_order_phase else disorder_offset)
+		position = position.lerp(target_pos, 0.08 * move_speed)
+	# 7. Mekanik Moving Platform Metronome: Bisa melayang langsung atau menunggu diinjak dulu (move_on_touch)
+	elif move_offset != Vector2.ZERO or disorder_offset != Vector2.ZERO:
+		if not move_on_touch or has_been_touched:
+			move_timer += _delta * move_speed * 2.0
+			var target_offset = move_offset if Global.is_order_phase else disorder_offset
+			var target = origin_pos + target_offset * sin(move_timer)
+			position = position.lerp(target, 0.1)
 
 # Hubungkan sinyal "body_entered" dari node Area2D di platform ke fungsi ini
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body is CharacterBody2D:
 		return
+
+	if move_on_touch:
+		has_been_touched = true
 
 	# Efek Jatuh namun Garansi Tetap Bisa Lompat
 	if fall_on_touch:

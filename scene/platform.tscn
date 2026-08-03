@@ -8,7 +8,6 @@ size = Vector2(32, 9)
 
 [node name="Platform" type="AnimatableBody2D" unique_id=363782284]
 script = ExtResource("1_wfaay")
-move_offset = Vector2(80, 0)
 
 [node name="Gerak" type="Sprite2D" parent="." unique_id=1362064676]
 texture = ExtResource("2_eil6o")
