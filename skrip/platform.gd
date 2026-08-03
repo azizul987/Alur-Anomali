@@ -9,17 +9,28 @@ enum TipePlatform {
 	FALL_ON_TOUCH = 5,
 	DISAPPEAR_ON_TOUCH = 6,
 	MOVE_ON_TOUCH = 7,
-	SHIFT_ON_MODE = 8
+	SHIFT_ON_MODE = 8,
+	SHADOW_ORDER = 9
 }
 
 @export_group("Dropdown Pilihan Tipe Platform")
 ## Pilih tipe platform menggunakan menu Dropdown murni di bawah ini:
 @export var tipe_dropdown: TipePlatform = TipePlatform.NORMAL
 
+@export_group("Target Rute Mudah (Marker / Tile)")
+## CARA 1 (Paling Gampang): Klik ikon pipet (eyedropper) dan pilih node/Marker2D tujuan di scene
+@export var target_node_order: Node2D
+@export var target_node_disorder: Node2D
+
+## CARA 2 (Hitung Kotak Tile): Cukup isi jumlah kotak tile (Misal: X = 5 untuk geser 5 kotak ke kanan)
+@export var move_in_tiles_order: Vector2 = Vector2.ZERO
+@export var move_in_tiles_disorder: Vector2 = Vector2.ZERO
+@export var tile_size_pixels: float = 16.0 # Ukuran 1 tile di gamemu (default 16 px)
+
 @export_group("Pengaturan Fisika & Parameter")
 @export var one_way: bool = true
-@export var move_offset: Vector2 = Vector2.ZERO # Rute saat ORDER (Stabil, misal horizontal)
-@export var disorder_offset: Vector2 = Vector2.ZERO # Rute saat DISORDER (Kacau/Melayang atas)
+@export var move_offset: Vector2 = Vector2.ZERO # Rute manual (Piksel murni) saat ORDER
+@export var disorder_offset: Vector2 = Vector2.ZERO # Rute manual (Piksel murni) saat DISORDER
 @export var move_speed: float = 2.0 # Kecepatan ayunan / pergeseran
 @export var bounce_power: float = 0.0 # Isi misal 600.0 untuk jadi trampolin
 @export var orbit_radius: float = 0.0 # Berputar 360 derajat mengitari titik awal
@@ -34,6 +45,7 @@ enum TipePlatform {
 @export var fall_on_touch: bool = false
 @export var move_on_touch: bool = false
 @export var shift_on_mode: bool = false
+@export var shadow_on_order: bool = false
 
 var origin_pos: Vector2
 var history: Array[Vector2] = []
@@ -53,8 +65,31 @@ func _ready() -> void:
 		TipePlatform.DISAPPEAR_ON_TOUCH: disappear_on_touch = true
 		TipePlatform.MOVE_ON_TOUCH: move_on_touch = true
 		TipePlatform.SHIFT_ON_MODE: shift_on_mode = true
+		TipePlatform.SHADOW_ORDER: shadow_on_order = true
 
 	origin_pos = position
+
+	# --- AUTO-KALKULASI RUTE KEMUDAHAN DESAIN LEVEL ---
+	# 1. Prioritas 1: Lewat Target Node (Pipet Eyedropper di Inspector)
+	if target_node_order:
+		move_offset = target_node_order.global_position - global_position
+	elif has_node("OrderTarget") and get_node("OrderTarget") is Node2D:
+		var target := get_node("OrderTarget") as Node2D
+		if target.position != Vector2.ZERO:
+			move_offset = target.position
+	elif move_in_tiles_order != Vector2.ZERO:
+		move_offset = move_in_tiles_order * tile_size_pixels
+
+	if target_node_disorder:
+		disorder_offset = target_node_disorder.global_position - global_position
+	elif has_node("DisorderTarget") and get_node("DisorderTarget") is Node2D:
+		var target := get_node("DisorderTarget") as Node2D
+		if target.position != Vector2.ZERO:
+			disorder_offset = target.position
+	elif move_in_tiles_disorder != Vector2.ZERO:
+		disorder_offset = move_in_tiles_disorder * tile_size_pixels
+	# --------------------------------------------------
+
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.one_way_collision = one_way
 	if has_node("Area2D") and not $Area2D.body_entered.is_connected(_on_area_2d_body_entered):
@@ -70,6 +105,12 @@ func _physics_process(_delta: float) -> void:
 		modulate.a = 1.0 if Global.is_order_phase else 0.25
 		if has_node("CollisionShape2D"):
 			$CollisionShape2D.disabled = not Global.is_order_phase
+
+	# 2b. Mekanik Shadow Order (Nyata saat Disorder, Ilusi/Tembus saat Order)
+	if shadow_on_order:
+		modulate.a = 1.0 if not Global.is_order_phase else 0.25
+		if has_node("CollisionShape2D"):
+			$CollisionShape2D.disabled = Global.is_order_phase
 
 	# 3. Mekanik Orbit Platform (Berputar mulus dengan akumulasi sudut)
 	if orbit_radius > 0:
@@ -102,6 +143,9 @@ func _physics_process(_delta: float) -> void:
 
 # Hubungkan sinyal "body_entered" dari node Area2D di platform ke fungsi ini
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	trigger_touch(body)
+
+func trigger_touch(body: Node2D) -> void:
 	if not body is CharacterBody2D:
 		return
 
@@ -109,7 +153,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		has_been_touched = true
 
 	# Efek Jatuh namun Garansi Tetap Bisa Lompat
-	if fall_on_touch:
+	if fall_on_touch and not is_falling:
 		is_falling = true
 		if "coyote_timer" in body: body.coyote_timer = 0.5 # Waktu toleransi khusus agar bisa lompat!
 
@@ -118,10 +162,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		body.velocity = -Global.gravity_direction * bounce_power
 
 	# Efek Hancur / Lenyap Sementara (lalu muncul lagi pas 3 detik)
-	if disappear_on_touch:
+	if disappear_on_touch and visible:
 		await get_tree().create_timer(0.4).timeout # Jeda getar/tunggu sebelum jatuh
 		hide()
-		$CollisionShape2D.set_deferred("disabled", true)
+		if has_node("CollisionShape2D"):
+			$CollisionShape2D.set_deferred("disabled", true)
 		await get_tree().create_timer(3.0).timeout # Jeda waktu sebelum platform muncul lagi
 		show()
-		$CollisionShape2D.set_deferred("disabled", false)
+		if has_node("CollisionShape2D"):
+			$CollisionShape2D.set_deferred("disabled", false)

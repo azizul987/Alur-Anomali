@@ -6,7 +6,6 @@ var default_slot := 1
 
 func set_slot(slot: int) -> void:
 	current_slot = slot
-	#print("Slot aktif:", current_slot)
 
 
 func create_new_slot(slot: int) -> void:
@@ -99,7 +98,6 @@ func save_game() -> void:
 	#}
 	
 	write_save_data(data)
-	#print("Point saved")
 
 
 func load_game() -> void:
@@ -132,9 +130,6 @@ func delete_current_save() -> void:
 
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
-		print("Save slot", current_slot, "berhasil dihapus")
-	else:
-		print("Save slot", current_slot, "memang belum ada")
 
 func get_all_used_slots() -> Array[int]:
 	var slots: Array[int] = []

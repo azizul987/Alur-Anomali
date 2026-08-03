@@ -33,7 +33,6 @@ func _ready() -> void:
 
 func toggle_phase() -> void:
 	is_order_phase = not is_order_phase
-	print("FASE METRONOME: ", "ORDER (Tick) 🟢" if is_order_phase else "DISORDER (Tock) 🔴")
 	if is_order_phase:
 		gravity_direction = Vector2.DOWN # Gravitasi stabil ke bawah saat Order
 
@@ -57,5 +56,4 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("change_grav") and Debug.is_active():
 		Global.gravity_direction = Global.gravity_direction.rotated(PI / 2.0).round()
 	if event.is_action_pressed("reset_save"):
-		print("wasasa")
 		SaveManager.delete_current_save()

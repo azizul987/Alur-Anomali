@@ -69,7 +69,10 @@ func _physics_process(delta):
 			if "is_ice" in col and col.is_ice: on_ice = true
 			if "conveyor_speed" in col and col.conveyor_speed != 0:
 				conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
-			if "has_been_touched" in col: col.has_been_touched = true
+			if col.has_method("trigger_touch"):
+				col.trigger_touch(self)
+			elif "has_been_touched" in col:
+				col.has_been_touched = true
 
 	var dash_pressed = Input.is_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_X) or Input.is_key_pressed(KEY_C)
 	if dash_pressed and jump_count >= 2 and not is_on_floor() and not air_dash_used:

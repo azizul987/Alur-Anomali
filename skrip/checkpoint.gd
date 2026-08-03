@@ -26,7 +26,6 @@ func _on_body_entered(body: Node2D) -> void:
 		if "start_position" in body:
 			body.start_position = global_position
 		SaveManager.save_game()
-		print("CHECKPOINT DIAKTIFKAN DI: ", global_position)
 		
 		if has_node("Sound"):
 			$Sound.play()
