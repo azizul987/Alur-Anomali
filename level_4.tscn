@@ -39,22 +39,22 @@ sources/2 = SubResource("TileSetAtlasSource_lvl4b")
 [node name="Checkpoints" type="Node2D" parent="." unique_id=401020370]
 
 [node name="CheckPoint1" parent="Checkpoints" unique_id=401020371 instance=ExtResource("7_chk")]
-position = Vector2(1100, -63)
+position = Vector2(1096, -72)
 
 [node name="CheckPoint2" parent="Checkpoints" unique_id=401020372 instance=ExtResource("7_chk")]
-position = Vector2(2099, -94)
+position = Vector2(2098, -88)
 
 [node name="CheckPoint3" parent="Checkpoints" unique_id=401020373 instance=ExtResource("7_chk")]
-position = Vector2(3349, -113)
+position = Vector2(3350, -104)
 
 [node name="CheckPoint4" parent="Checkpoints" unique_id=401020374 instance=ExtResource("7_chk")]
-position = Vector2(4450, -153)
+position = Vector2(4451, -152)
 
 [node name="CheckPoint5" parent="Checkpoints" unique_id=401020375 instance=ExtResource("7_chk")]
-position = Vector2(5551, -213)
+position = Vector2(5550, -216)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=401020301]
-tile_map_data = PackedByteArray("AAAFAAMAAgAHAAEAAAAGAAMAAgAHAAEAAAAHAAMAAgAHAAAAAACCAe//AgAHAAAAAACDAe//AgAHAAAAAACEAe//AgAHAAAAAACFAe//AgAHAAAAAACBAe//AgAHAAAAAAAJAAMAAgAHAAAAAAAIAAMAAgAHAAAAAAAGAAIAAgAHAAAAAAAFAAIAAgAHAAAAAAAEAAIAAgAHAAAAAAADAAIAAgAHAAAAAAACAAIAAgAHAAAAAAABAAIAAgAHAAAAAAAAAAIAAgAHAAAAAAD//wMAAgAHAAAAAAD+/wMAAgAHAAAAAAAAAAMAAgAHAAEAAAABAAMAAgAHAAEAAAACAAMAAgAHAAEAAAADAAMAAgAHAAEAAAAEAAMAAgAHAAEAAAAFAAQAAgAHAAEAAAAGAAQAAgAHAAEAAAAHAAQAAgAHAAEAAAAIAAQAAgAHAAEAAAAJAAQAAgAHAAEAAAAEAAQAAgAHAAEAAAADAAQAAgAHAAEAAAACAAQAAgAHAAEAAAABAAQAAgAHAAEAAAAAAAQAAgAHAAEAAAD//wQAAgAHAAEAAAD+/wQAAgAHAAEAAAD+/wUAAgAHAAEAAAD//wUAAgAHAAEAAAAAAAUAAgAHAAEAAAABAAUAAgAHAAEAAAACAAUAAgAHAAEAAAADAAUAAgAHAAEAAAAEAAUAAgAHAAEAAAAFAAUAAgAHAAEAAAAGAAUAAgAHAAEAAAAHAAUAAgAHAAEAAAAIAAUAAgAHAAEAAAAJAAUAAgAHAAEAAAA=")
+tile_map_data = PackedByteArray("AAAFAAMAAgAHAAEAAAAGAAMAAgAHAAEAAAAHAAMAAgAHAAAAAACCAe//AgAHAAAAAACDAe//AgAHAAAAAACEAe//AgAHAAAAAACFAe//AgAHAAAAAACBAe//AgAHAAAAAAAJAAMAAgAHAAAAAAAIAAMAAgAHAAAAAAAGAAIAAgAHAAAAAAAFAAIAAgAHAAAAAAAEAAIAAgAHAAAAAAADAAIAAgAHAAAAAAACAAIAAgAHAAAAAAABAAIAAgAHAAAAAAAAAAIAAgAHAAAAAAD//wMAAgAHAAAAAAD+/wMAAgAHAAAAAAAAAAMAAgAHAAEAAAABAAMAAgAHAAEAAAACAAMAAgAHAAEAAAADAAMAAgAHAAEAAAAEAAMAAgAHAAEAAAAFAAQAAgAHAAEAAAAGAAQAAgAHAAEAAAAHAAQAAgAHAAEAAAAIAAQAAgAHAAEAAAAJAAQAAgAHAAEAAAAEAAQAAgAHAAEAAAADAAQAAgAHAAEAAAACAAQAAgAHAAEAAAABAAQAAgAHAAEAAAAAAAQAAgAHAAEAAAD//wQAAgAHAAEAAAD+/wQAAgAHAAEAAAD+/wUAAgAHAAEAAAD//wUAAgAHAAEAAAAAAAUAAgAHAAEAAAABAAUAAgAHAAEAAAACAAUAAgAHAAEAAAADAAUAAgAHAAEAAAAEAAUAAgAHAAEAAAAFAAUAAgAHAAEAAAAGAAUAAgAHAAEAAAAHAAUAAgAHAAEAAAAIAAUAAgAHAAEAAAAJAAUAAgAHAAEAAABEAPz/AgAHAAAAAABFAPz/AgAHAAAAAABDAPz/AgAHAAAAAACCAPv/AgAHAAAAAACDAPv/AgAHAAAAAACEAPv/AgAHAAAAAACBAPv/AgAHAAAAAADQAPr/AgAHAAAAAADRAPr/AgAHAAAAAADSAPr/AgAHAAAAAAAVAff/AgAHAAAAAAAWAff/AgAHAAAAAAAXAff/AgAHAAAAAABaAfP/AgAHAAAAAABbAfP/AgAHAAAAAABcAfP/AgAHAAAAAABZAfP/AgAHAAAAAAA=")
 tile_set = SubResource("TileSet_lvl4")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=401020302]
@@ -98,9 +98,6 @@ position = Vector2(900, -80)
 tipe_dropdown = 2
 shadow_on_disorder = true
 
-[node name="SafeIsland_1" parent="Platforms" unique_id=401020315 instance=ExtResource("3_plat")]
-position = Vector2(1100, -50)
-
 [node name="Sesi2_IceConveyor1" parent="Platforms" unique_id=401020321 instance=ExtResource("3_plat")]
 position = Vector2(1320, -50)
 tipe_dropdown = 3
@@ -120,9 +117,6 @@ tipe_dropdown = 3
 conveyor_speed = 320.0
 is_ice = true
 
-[node name="SafeIsland_2" parent="Platforms" unique_id=401020324 instance=ExtResource("3_plat")]
-position = Vector2(2100, -80)
-
 [node name="Sesi3_OrbitTrampolin" parent="Platforms" unique_id=401020331 instance=ExtResource("3_plat")]
 position = Vector2(2340, -80)
 bounce_power = 680.0
@@ -133,15 +127,11 @@ position = Vector2(2620, -180)
 
 [node name="Sesi3_Disappear1" parent="Platforms" unique_id=401020333 instance=ExtResource("3_plat")]
 position = Vector2(2860, -180)
-tipe_dropdown = 6
-disappear_on_touch = true
+bounce_power = 200.0
 
 [node name="Sesi3_OrbitFall" parent="Platforms" unique_id=401020334 instance=ExtResource("3_plat")]
 position = Vector2(3100, -150)
 orbit_radius = 70.0
-
-[node name="SafeIsland_3" parent="Platforms" unique_id=401020335 instance=ExtResource("3_plat")]
-position = Vector2(3350, -100)
 
 [node name="Sesi4_MoveOnTouch1" parent="Platforms" unique_id=401020341 instance=ExtResource("3_plat")]
 position = Vector2(3580, -100)
@@ -161,9 +151,6 @@ position = Vector2(4200, -160)
 tipe_dropdown = 9
 shadow_on_order = true
 
-[node name="SafeIsland_4" parent="Platforms" unique_id=401020344 instance=ExtResource("3_plat")]
-position = Vector2(4450, -140)
-
 [node name="Sesi5_MemoryRewind1" parent="Platforms" unique_id=401020351 instance=ExtResource("3_plat")]
 position = Vector2(4680, -140)
 disorder_offset = Vector2(380, -120)
@@ -175,9 +162,6 @@ tipe_dropdown = 4
 move_offset = Vector2(350, 100)
 move_speed = 1.8
 is_memory_rewind = true
-
-[node name="SafeIsland_5" parent="Platforms" unique_id=401020353 instance=ExtResource("3_plat")]
-position = Vector2(5550, -200)
 
 [node name="Sesi6_TreadmillOrder" parent="Platforms" unique_id=401020361 instance=ExtResource("3_plat")]
 position = Vector2(5750, -240)
