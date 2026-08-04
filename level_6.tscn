@@ -1,0 +1,262 @@
+[gd_scene format=4 uid="uid://bk1jj8q2snqdt"]
+
+[ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="1_soim0"]
+[ext_resource type="Texture2D" uid="uid://4ktsqa7o345x" path="res://asset/Lantai_tes.png" id="2_vp58d"]
+[ext_resource type="Texture2D" uid="uid://d0bxgw2ahqh7h" path="res://asset/Pixel Adventure 1/Terrain/Terrain (16x16).png" id="3_3eqwd"]
+[ext_resource type="Texture2D" uid="uid://d2763iuft8b1h" path="res://asset/bg_sky2.png" id="4_xo623"]
+[ext_resource type="Script" uid="uid://dkddfptbip8ab" path="res://skrip/dynamic_bg.gd" id="5_ejlf8"]
+[ext_resource type="PackedScene" uid="uid://cbg8go40i77bj" path="res://object/player.tscn" id="6_yh5ew"]
+[ext_resource type="PackedScene" uid="uid://cd5wab2mnru77" path="res://scene/platform.tscn" id="7_dxhc4"]
+[ext_resource type="PackedScene" uid="uid://c7k2coinsu3id" path="res://object/coin.tscn" id="8_notfv"]
+[ext_resource type="PackedScene" uid="uid://ba8d2totfwvak" path="res://object/next_level.tscn" id="9_hg2ow"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lvl4a"]
+texture = ExtResource("2_vp58d")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lvl4b"]
+texture = ExtResource("3_3eqwd")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+6:0/0 = 0
+6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:0/0 = 0
+7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+8:0/0 = 0
+8:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_lvl4"]
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_lvl4a")
+sources/2 = SubResource("TileSetAtlasSource_lvl4b")
+
+[node name="d" type="Node2D" unique_id=622395556]
+
+[node name="Checkpoints" type="Node2D" parent="." unique_id=401020370]
+
+[node name="CheckPoint1" parent="Checkpoints" unique_id=401020371 instance=ExtResource("1_soim0")]
+position = Vector2(1100, -63)
+
+[node name="CheckPoint2" parent="Checkpoints" unique_id=401020372 instance=ExtResource("1_soim0")]
+position = Vector2(2099, -94)
+
+[node name="CheckPoint3" parent="Checkpoints" unique_id=401020373 instance=ExtResource("1_soim0")]
+position = Vector2(3349, -113)
+
+[node name="CheckPoint4" parent="Checkpoints" unique_id=401020374 instance=ExtResource("1_soim0")]
+position = Vector2(4450, -153)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=401020301]
+position = Vector2(367, -4)
+tile_map_data = PackedByteArray("AAAFAAMAAgAHAAEAAAAGAAMAAgAHAAEAAAAHAAMAAgAHAAAAAAAJAAMAAgAHAAAAAAAIAAMAAgAHAAAAAAAGAAIAAgAHAAAAAAAFAAIAAgAHAAAAAAAEAAIAAgAHAAAAAAADAAIAAgAHAAAAAAACAAIAAgAHAAAAAAABAAIAAgAHAAAAAAAAAAIAAgAHAAAAAAD//wMAAgAHAAAAAAD+/wMAAgAHAAAAAAAAAAMAAgAHAAEAAAABAAMAAgAHAAEAAAACAAMAAgAHAAEAAAADAAMAAgAHAAEAAAAEAAMAAgAHAAEAAAAFAAQAAgAHAAEAAAAGAAQAAgAHAAEAAAAHAAQAAgAHAAEAAAAIAAQAAgAHAAEAAAAJAAQAAgAHAAEAAAAEAAQAAgAHAAEAAAADAAQAAgAHAAEAAAACAAQAAgAHAAEAAAABAAQAAgAHAAEAAAAAAAQAAgAHAAEAAAD//wQAAgAHAAEAAAD+/wQAAgAHAAEAAAD+/wUAAgAHAAEAAAD//wUAAgAHAAEAAAAAAAUAAgAHAAEAAAABAAUAAgAHAAEAAAACAAUAAgAHAAEAAAADAAUAAgAHAAEAAAAEAAUAAgAHAAEAAAAFAAUAAgAHAAEAAAAGAAUAAgAHAAEAAAAHAAUAAgAHAAEAAAAIAAUAAgAHAAEAAAAJAAUAAgAHAAEAAAApAPf/AgAHAAAAAAAqAPf/AgAHAAEAAAArAPf/AgAHAAEAAAAsAPf/AgAHAAEAAAApAPj/AgAHAAEAAAAqAPj/AgAHAAEAAAArAPj/AgAHAAEAAAAsAPj/AgAHAAEAAAAtAPj/AgAHAAEAAAAtAPf/AgAHAAEAAAAqAPb/AgAHAAAAAAArAPb/AgAHAAAAAAAsAPb/AgAHAAAAAAAtAPb/AgAHAAAAAACCAPv/AgAHAAAAAACDAPv/AgAHAAAAAACEAPv/AgAHAAAAAACBAPv/AgAHAAAAAACFAPv/AgAHAAAAAACBAPz/AgAHAAEAAACCAPz/AgAHAAEAAACDAPz/AgAHAAEAAACEAPz/AgAHAAEAAACFAPz/AgAHAAEAAACEAP3/AgAHAAEAAACDAP3/AgAHAAEAAACCAP3/AgAHAAEAAACBAP3/AgAHAAEAAACFAP3/AgAHAAEAAACEAPD/AgAHAAAAAACFAPD/AgAHAAAAAACGAPD/AgAHAAAAAACHAPD/AgAHAAAAAACIAPD/AgAHAAAAAADQAPr/AgAHAAAAAADRAPr/AgAHAAAAAADSAPr/AgAHAAAAAADPAPr/AgAHAAAAAADTAPr/AgAHAAAAAADPAPH/AgAHAAAAAADQAPH/AgAHAAAAAADRAPH/AgAHAAAAAADSAPH/AgAHAAAAAADTAPH/AgAHAAAAAABZAfj/AgAHAAAAAABaAfj/AgAHAAAAAABbAfj/AgAHAAAAAABcAfj/AgAHAAAAAAA=")
+tile_set = SubResource("TileSet_lvl4")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=401020302]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=401020303]
+motion_scale = Vector2(0.3, 0)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=401020304]
+texture_repeat = 2
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_xo623")
+centered = false
+script = ExtResource("5_ejlf8")
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." unique_id=401020305 instance=ExtResource("6_yh5ew")]
+position = Vector2(30, 0)
+
+[node name="Platforms" type="Node2D" parent="." unique_id=401020306]
+
+[node name="Sesi1_Pendulum1" parent="Platforms" unique_id=401020311 instance=ExtResource("7_dxhc4")]
+position = Vector2(855, -114)
+tipe_dropdown = 1
+is_pendulum = true
+
+[node name="Sesi1_ShadowTrampolin1" parent="Platforms" unique_id=401020312 instance=ExtResource("7_dxhc4")]
+position = Vector2(981, -25)
+tipe_dropdown = 9
+bounce_power = 650.0
+shadow_on_order = true
+
+[node name="Sesi1_ShiftMode1" parent="Platforms" unique_id=401020313 instance=ExtResource("7_dxhc4")]
+position = Vector2(291, 34)
+tipe_dropdown = 8
+disorder_offset = Vector2(150, -60)
+shift_on_mode = true
+
+[node name="Sesi1_ShiftMode3" parent="Platforms" unique_id=363782284 instance=ExtResource("7_dxhc4")]
+position = Vector2(3588, -93)
+tipe_dropdown = 8
+disorder_offset = Vector2(150, -60)
+shift_on_mode = true
+
+[node name="Sesi1_ShiftMode2" parent="Platforms" unique_id=1795346885 instance=ExtResource("7_dxhc4")]
+position = Vector2(1483, -44)
+tipe_dropdown = 8
+disorder_offset = Vector2(150, -60)
+shift_on_mode = true
+
+[node name="Sesi1_ShadowDisorder1" parent="Platforms" unique_id=401020314 instance=ExtResource("7_dxhc4")]
+position = Vector2(600, -82)
+tipe_dropdown = 2
+shadow_on_disorder = true
+
+[node name="SafeIsland_1" parent="Platforms" unique_id=401020315 instance=ExtResource("7_dxhc4")]
+position = Vector2(1100, -44)
+
+[node name="Sesi2_IceConveyor1" parent="Platforms" unique_id=401020321 instance=ExtResource("7_dxhc4")]
+position = Vector2(1300, -45)
+tipe_dropdown = 3
+conveyor_speed = 350.0
+is_ice = true
+
+[node name="Sesi2_Trampolin1" parent="Platforms" unique_id=401020322 instance=ExtResource("7_dxhc4")]
+position = Vector2(1809, -20)
+tipe_dropdown = 3
+bounce_power = 600.0
+conveyor_speed = 380.0
+is_ice = true
+
+[node name="Sesi2_IceConveyor3" parent="Platforms" unique_id=401020323 instance=ExtResource("7_dxhc4")]
+position = Vector2(1960, -105)
+tipe_dropdown = 3
+conveyor_speed = 320.0
+is_ice = true
+
+[node name="Sesi2_IceConveyor4" parent="Platforms" unique_id=1523033140 instance=ExtResource("7_dxhc4")]
+position = Vector2(1960, -105)
+tipe_dropdown = 3
+conveyor_speed = 320.0
+is_ice = true
+
+[node name="Sesi3_OrbitTrampolin" parent="Platforms" unique_id=401020331 instance=ExtResource("7_dxhc4")]
+position = Vector2(2340, -80)
+bounce_power = 680.0
+orbit_radius = 85.0
+
+[node name="Sesi3_FallTouch1" parent="Platforms" unique_id=401020332 instance=ExtResource("7_dxhc4")]
+position = Vector2(2332, -262)
+
+[node name="Sesi3_Disappear1" parent="Platforms" unique_id=401020333 instance=ExtResource("7_dxhc4")]
+position = Vector2(2995, -298)
+tipe_dropdown = 6
+disappear_on_touch = true
+
+[node name="Sesi3_OrbitFall" parent="Platforms" unique_id=401020334 instance=ExtResource("7_dxhc4")]
+position = Vector2(3117, -150)
+orbit_radius = 70.0
+
+[node name="Sesi4_MoveOnTouch1" parent="Platforms" unique_id=401020341 instance=ExtResource("7_dxhc4")]
+position = Vector2(2567, -237)
+tipe_dropdown = 7
+move_offset = Vector2(350, -80)
+disorder_offset = Vector2(350, 40)
+move_speed = 2.2
+move_on_touch = true
+
+[node name="Sesi4_ShadowAlter1" parent="Platforms" unique_id=401020342 instance=ExtResource("7_dxhc4")]
+position = Vector2(3966, -148)
+tipe_dropdown = 2
+shadow_on_disorder = true
+
+[node name="Sesi4_ShadowAlter3" parent="Platforms" unique_id=1493457707 instance=ExtResource("7_dxhc4")]
+position = Vector2(5124, -258)
+tipe_dropdown = 2
+shadow_on_disorder = true
+
+[node name="Sesi4_ShadowAlter2" parent="Platforms" unique_id=401020343 instance=ExtResource("7_dxhc4")]
+position = Vector2(4200, -160)
+tipe_dropdown = 9
+shadow_on_order = true
+
+[node name="SafeIsland_4" parent="Platforms" unique_id=401020344 instance=ExtResource("7_dxhc4")]
+position = Vector2(4451, -134)
+
+[node name="Sesi5_MemoryRewind1" parent="Platforms" unique_id=401020351 instance=ExtResource("7_dxhc4")]
+position = Vector2(4680, -140)
+disorder_offset = Vector2(380, -120)
+move_speed = 1.8
+
+[node name="Sesi5_MemoryRewind2" parent="Platforms" unique_id=401020352 instance=ExtResource("7_dxhc4")]
+position = Vector2(5303, -179)
+tipe_dropdown = 4
+move_offset = Vector2(100, 100)
+move_speed = 1.8
+is_memory_rewind = true
+
+[node name="Sesi6_TreadmillOrder" parent="Platforms" unique_id=401020361 instance=ExtResource("7_dxhc4")]
+position = Vector2(5555, -123)
+tipe_dropdown = 10
+conveyor_speed = 280.0
+is_treadmill_normal = true
+
+[node name="Sesi6_TreadmillDisorder" parent="Platforms" unique_id=401020362 instance=ExtResource("7_dxhc4")]
+position = Vector2(5737, -177)
+tipe_dropdown = 11
+conveyor_speed = 280.0
+is_treadmill_disorder = true
+
+[node name="Coins" type="Node2D" parent="." unique_id=401020380]
+
+[node name="Coin1" parent="Coins" unique_id=401020381 instance=ExtResource("8_notfv")]
+position = Vector2(148, 38)
+
+[node name="Coin2" parent="Coins" unique_id=401020382 instance=ExtResource("8_notfv")]
+position = Vector2(601, -97)
+
+[node name="Coin3" parent="Coins" unique_id=401020383 instance=ExtResource("8_notfv")]
+position = Vector2(854, -129)
+
+[node name="Coin4" parent="Coins" unique_id=401020384 instance=ExtResource("8_notfv")]
+position = Vector2(1300, -61)
+
+[node name="Coin5" parent="Coins" unique_id=401020385 instance=ExtResource("8_notfv")]
+position = Vector2(1852, -98)
+
+[node name="Coin6" parent="Coins" unique_id=401020386 instance=ExtResource("8_notfv")]
+position = Vector2(1961, -122)
+
+[node name="Coin7" parent="Coins" unique_id=401020387 instance=ExtResource("8_notfv")]
+position = Vector2(2182, -268)
+
+[node name="Coin8" parent="Coins" unique_id=401020388 instance=ExtResource("8_notfv")]
+position = Vector2(2800, -290)
+
+[node name="Coin9" parent="Coins" unique_id=401020389 instance=ExtResource("8_notfv")]
+position = Vector2(3116, -163)
+
+[node name="Coin16" parent="Coins" unique_id=71365601 instance=ExtResource("8_notfv")]
+position = Vector2(3328, -248)
+
+[node name="Coin17" parent="Coins" unique_id=576977928 instance=ExtResource("8_notfv")]
+position = Vector2(3350, -248)
+
+[node name="Coin18" parent="Coins" unique_id=1135119008 instance=ExtResource("8_notfv")]
+position = Vector2(3377, -249)
+
+[node name="Coin10" parent="Coins" unique_id=401020390 instance=ExtResource("8_notfv")]
+position = Vector2(3961, -172)
+
+[node name="Coin11" parent="Coins" unique_id=401020391 instance=ExtResource("8_notfv")]
+position = Vector2(4090, -220)
+
+[node name="Coin12" parent="Coins" unique_id=401020392 instance=ExtResource("8_notfv")]
+position = Vector2(4890, -220)
+
+[node name="Coin13" parent="Coins" unique_id=401020393 instance=ExtResource("8_notfv")]
+position = Vector2(5494, -150)
+
+[node name="Coin14" parent="Coins" unique_id=401020394 instance=ExtResource("8_notfv")]
+position = Vector2(5734, -191)
+
+[node name="NextLevel" parent="." unique_id=401020399 instance=ExtResource("9_hg2ow")]
+position = Vector2(5920, -140)
+next_scene = "res://scene/victory.tscn"
+next_level_number = 5
