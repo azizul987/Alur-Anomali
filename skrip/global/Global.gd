@@ -17,6 +17,7 @@ var sfx_transition: AudioStreamPlayer
 var anomaly_drone: AudioStreamPlayer
 var sfx_button_click: AudioStreamPlayer
 var disorder_timer: float = 0.0 # Menghitung lama tinggal di mode non-normal (Disorder)
+var darkness_overlay: ColorRect # Overlay layar untuk menjamin efek semakin gelap pasti kelihatan nyata!
 
 signal reset_trap
 
@@ -35,6 +36,12 @@ func _ready() -> void:
 	screen_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	screen_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE # Agar tidak mengganggu input
 	c_layer.add_child(screen_rect)
+	
+	darkness_overlay = ColorRect.new()
+	darkness_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	darkness_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	darkness_overlay.color = Color(0.02, 0.0, 0.05, 0.0) # Bening transparan saat kondisi normal
+	c_layer.add_child(darkness_overlay)
 	
 	shader_mat = ShaderMaterial.new()
 	shader_mat.shader = load("res://skrip/shader/transition.gdshader")
@@ -108,30 +115,28 @@ func _connect_buttons_recursive(node: Node) -> void:
 		_connect_buttons_recursive(child)
 
 func _process(delta: float) -> void:
-	# Efek kegelapan bertahap & distorsi musik saat terlalu lama di mode Disorder (Non-Normal)
+	# Efek kegelapan bertahap & distorsi musik saat tinggal di mode Disorder (Non-Normal)
 	var current_scene = get_tree().current_scene if get_tree() else null
-	var path_lower = current_scene.scene_file_path.to_lower() if current_scene else ""
-	# Aktifkan efek di semua scene permainan (tanpa peduli nama huruf besar/kecil) kecuali menu & victory screen!
-	if current_scene and not ("menu" in path_lower or "victory" in path_lower):
-		if not is_order_phase:
+	if current_scene and not is_order_phase:
+		var path_lower = current_scene.scene_file_path.to_lower() if current_scene.scene_file_path else ""
+		if not ("menu" in path_lower or "victory" in path_lower):
 			disorder_timer += delta
-			# Proses menggelapkan memakan waktu 20 detik secara mulus untuk mencapai puncak kegelapan
-			var t = clampf(disorder_timer / 20.0, 0.0, 1.0)
+			# Dipersingkat dari 20 detik menjadi 7 detik agar kegelapan pekat terasa cepat memburu pemain!
+			var t = clampf(disorder_timer / 7.0, 0.0, 1.0)
 			
-			if canvas_mod and disorder_timer > 0.5:
-				var base_color = Color(0.7, 0.35, 0.45) # Warna meremang awal Disorder
-				var eclipse_color = Color(0.12, 0.05, 0.09) # Kegelapan pekat anomali yang mendebarkan!
-				canvas_mod.color = base_color.lerp(eclipse_color, t)
+			# Gelapkan dunia ganda: CanvasModulate + Darkness Overlay se-layar penuh!
+			if canvas_mod:
+				canvas_mod.color = Color(0.7, 0.35, 0.45).lerp(Color(0.1, 0.05, 0.1), t)
+			if darkness_overlay:
+				darkness_overlay.color = Color(0.02, 0.0, 0.06, lerpf(0.0, 0.82, t))
 				
-			if bgm_player and disorder_timer > 0.5:
-				# Musik perlahan semakin lambat dan mendalam (efek terdistorsi waktu)
-				bgm_player.pitch_scale = lerpf(0.84, 0.58, t)
+			if bgm_player:
+				bgm_player.pitch_scale = lerpf(0.84, 0.55, t)
 				
-			if anomaly_drone and disorder_timer > 2.0:
+			if anomaly_drone and disorder_timer > 0.3:
 				if not anomaly_drone.playing:
 					anomaly_drone.play()
-				# Suara gemuruh dimensi anomali makin intens saat dunia semakin gelap!
-				anomaly_drone.volume_db = lerpf(-40.0, -12.0, clampf((disorder_timer - 2.0) / 18.0, 0.0, 1.0))
+				anomaly_drone.volume_db = lerpf(-40.0, -10.0, clampf((disorder_timer - 0.3) / 6.0, 0.0, 1.0))
 				anomaly_drone.pitch_scale = lerpf(0.35, 0.18, t)
 
 func toggle_phase() -> void:
@@ -146,6 +151,9 @@ func toggle_phase() -> void:
 	var tween_color = create_tween()
 	if canvas_mod:
 		tween_color.tween_property(canvas_mod, "color", target_color, 0.35).set_trans(Tween.TRANS_SINE)
+	if darkness_overlay and is_order_phase:
+		var tween_dark = create_tween()
+		tween_dark.tween_property(darkness_overlay, "color:a", 0.0, 0.25).set_trans(Tween.TRANS_CUBIC)
 	
 	if shader_mat:
 		shader_mat.set_shader_parameter("effect_strength", 1.0) # Pemicu gelombang glitch kejut

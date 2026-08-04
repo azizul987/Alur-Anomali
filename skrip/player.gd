@@ -12,7 +12,10 @@ var was_on_floor: bool = false
 
 func _ready() -> void:
 	SaveManager.load_game()
-	global_position = Global.checkpoint_position
+	if Global.checkpoint_position != Vector2.ZERO:
+		global_position = Global.checkpoint_position
+	else:
+		Global.checkpoint_position = global_position
 	start_position = global_position
 	
 	# Setup animasi Jump dan Fall secara dinamis (tanpa menimpa file .tscn!)
