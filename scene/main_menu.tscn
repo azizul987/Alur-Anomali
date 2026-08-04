@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bfjoxllq6gyo3" path="res://skrip/main_menu.gd" id="1_mm_script"]
 [ext_resource type="Texture2D" uid="uid://d2763iuft8b1h" path="res://asset/bg_sky2.png" id="2_bg_tex"]
 [ext_resource type="FontFile" uid="uid://bgj0m7o0vpyqi" path="res://object/BPdotsSquareBold.otf" id="3_pixel_font"]
+[ext_resource type="Texture2D" uid="uid://bjhle0f8cc63j" path="res://asset/Pixel Adventure 1/Main Characters/Ninja Frog/Fall (32x32).png" id="4_0iwki"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 bg_color = Color(0.17215967, 0.37211627, 0.20003006, 0.92156863)
@@ -104,6 +105,11 @@ theme_override_fonts/font = ExtResource("3_pixel_font")
 theme_override_font_sizes/font_size = 36
 text = "M E T R O N O M E"
 horizontal_alignment = 1
+
+[node name="Frog" type="Sprite2D" parent="VBoxContainer/TitleBox" unique_id=503290107]
+position = Vector2(183, -91)
+scale = Vector2(5.28125, 5.28125)
+texture = ExtResource("4_0iwki")
 
 [node name="Spacer" type="Control" parent="VBoxContainer" unique_id=424410255]
 custom_minimum_size = Vector2(0, 20)

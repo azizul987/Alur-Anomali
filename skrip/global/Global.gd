@@ -110,7 +110,9 @@ func _connect_buttons_recursive(node: Node) -> void:
 func _process(delta: float) -> void:
 	# Efek kegelapan bertahap & distorsi musik saat terlalu lama di mode Disorder (Non-Normal)
 	var current_scene = get_tree().current_scene if get_tree() else null
-	if current_scene and current_scene.scene_file_path.contains("level"):
+	var path_lower = current_scene.scene_file_path.to_lower() if current_scene else ""
+	# Aktifkan efek di semua scene permainan (tanpa peduli nama huruf besar/kecil) kecuali menu & victory screen!
+	if current_scene and not ("menu" in path_lower or "victory" in path_lower):
 		if not is_order_phase:
 			disorder_timer += delta
 			# Proses menggelapkan memakan waktu 20 detik secara mulus untuk mencapai puncak kegelapan

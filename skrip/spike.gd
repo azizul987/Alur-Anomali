@@ -30,10 +30,10 @@ func reset():
 	is_resetting = false 
 	
 func update_spike_state():
-	if !spike_visible and Global.is_order_phase:
-		$VisualParent/Sprite2D.visible = false
-	else:
-		$VisualParent/Sprite2D.visible = true
+	var should_hide = (!spike_visible and Global.is_order_phase)
+	$VisualParent/Sprite2D.visible = !should_hide
+	if damage_hitbox and damage_hitbox.disabled != should_hide:
+		damage_hitbox.disabled = should_hide
 
 func _on_damage_body_entered(body: Node2D) -> void:
 	if body.has_method("mati"):

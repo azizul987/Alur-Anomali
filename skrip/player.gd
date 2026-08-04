@@ -15,6 +15,29 @@ func _ready() -> void:
 	global_position = Global.checkpoint_position
 	start_position = global_position
 	
+	# Setup animasi Jump dan Fall secara dinamis (tanpa menimpa file .tscn!)
+	if has_node("Sprite2D") and $Sprite2D.sprite_frames:
+		var frames = $Sprite2D.sprite_frames
+		if not frames.has_animation("Jump"):
+			frames.add_animation("Jump")
+			var jump_tex = load("res://asset/Pixel Adventure 1/Main Characters/Ninja Frog/Jump (32x32).png")
+			if jump_tex:
+				var atlas_j = AtlasTexture.new()
+				atlas_j.atlas = jump_tex
+				atlas_j.region = Rect2(0, 0, 32, 32)
+				frames.add_frame("Jump", atlas_j)
+				frames.set_animation_loop("Jump", false)
+				
+		if not frames.has_animation("Fall"):
+			frames.add_animation("Fall")
+			var fall_tex = load("res://asset/Pixel Adventure 1/Main Characters/Ninja Frog/Fall (32x32).png")
+			if fall_tex:
+				var atlas_f = AtlasTexture.new()
+				atlas_f.atlas = fall_tex
+				atlas_f.region = Rect2(0, 0, 32, 32)
+				frames.add_frame("Fall", atlas_f)
+				frames.set_animation_loop("Fall", false)
+	
 	# Setup efek partikel debu lari di kaki pemain
 	run_particles = CPUParticles2D.new()
 	run_particles.position = Vector2(0, 13) # Pas di telapak kaki pemain
@@ -81,10 +104,18 @@ func _physics_process(delta):
 
 	var direction = Input.get_axis("ui_left", "ui_right")
 	if direction != 0:
-		$Sprite2D.play("Run")
 		$Sprite2D.flip_h = direction < 0
 		if run_particles:
 			run_particles.direction = Vector2(-direction, -0.4)
+			
+	if not is_on_floor():
+		# Saat melayang di udara: gunakan dot product agar animasi akurat di segala arah gravitasi anomali!
+		if velocity.dot(Global.gravity_direction) < 0:
+			$Sprite2D.play("Jump")
+		else:
+			$Sprite2D.play("Fall")
+	elif direction != 0:
+		$Sprite2D.play("Run")
 	else:
 		$Sprite2D.play("Idle")
 		

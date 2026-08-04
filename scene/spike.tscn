@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c60d0p2js32n7"]
+[gd_scene format=3 uid="uid://bmx7ane2vrpeg"]
 
 [ext_resource type="Script" uid="uid://blvi56iruba8p" path="res://skrip/spike.gd" id="1_vi0yg"]
 [ext_resource type="Texture2D" uid="uid://bvumgy3f4n7d0" path="res://asset/Pixel Adventure 1/Traps/Spikes/Idle.png" id="1_xanym"]
