@@ -219,13 +219,13 @@ disappear_on_touch = true
 [node name="CheckPoints" type="Node2D" parent="." unique_id=849203918]
 
 [node name="CheckPoint1" parent="CheckPoints" unique_id=364758697 instance=ExtResource("7_chk")]
-position = Vector2(840.81757, -22.779634)
+position = Vector2(840, -20)
 
 [node name="CheckPoint2" parent="CheckPoints" unique_id=475869708 instance=ExtResource("7_chk")]
-position = Vector2(1683.6189, -39.13235)
+position = Vector2(1680, -30)
 
 [node name="CheckPoint3" parent="CheckPoints" unique_id=586970819 instance=ExtResource("7_chk")]
-position = Vector2(2466.4644, -71.84547)
+position = Vector2(2460, -60)
 
 [node name="Coins" type="Node2D" parent="." unique_id=938291048]
 
@@ -275,6 +275,6 @@ position = Vector2(3080, -240)
 position = Vector2(3280, -215)
 
 [node name="NextLevel" parent="." unique_id=324354657 instance=ExtResource("9_nxt")]
-position = Vector2(3500.017, -167.89438)
+position = Vector2(3500, -160)
 next_scene = "res://level_4.tscn"
 next_level_number = 4

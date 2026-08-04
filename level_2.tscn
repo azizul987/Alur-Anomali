@@ -209,13 +209,13 @@ disappear_on_touch = true
 [node name="CheckPoints" type="Node2D" parent="." unique_id=648291039]
 
 [node name="CheckPoint1" parent="CheckPoints" unique_id=748392019 instance=ExtResource("7_chk")]
-position = Vector2(980, -24)
+position = Vector2(980, -20)
 
 [node name="CheckPoint2" parent="CheckPoints" unique_id=647382918 instance=ExtResource("7_chk")]
 position = Vector2(1997, -72)
 
 [node name="CheckPoint3" parent="CheckPoints" unique_id=849302919 instance=ExtResource("7_chk")]
-position = Vector2(3060, -152)
+position = Vector2(3060, -150)
 
 [node name="Coins" type="Node2D" parent="." unique_id=748291038]
 
