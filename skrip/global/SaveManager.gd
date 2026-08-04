@@ -81,6 +81,7 @@ func save_game() -> void:
 		"y":Global.gravity_direction.y
 	}
 	data["points"] = Global.points
+	data["collected_coins"] = Global.collected_coins
 	data["current_level"] = Global.current_level
 	if get_tree() and get_tree().current_scene:
 		data["scene_path"] = get_tree().current_scene.scene_file_path
@@ -117,6 +118,7 @@ func load_game(change_scene_if_different: bool = false) -> void:
 		gravity_direction.y
 	)
 	Global.points = int(data.get("points", 0))
+	Global.collected_coins = data.get("collected_coins", {})
 	Global.current_level = int(data.get("current_level", 1))
 	
 	var saved_scene: String = data.get("scene_path", "res://scene/level1.tscn")

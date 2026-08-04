@@ -6,6 +6,7 @@ var current_rule: int = 0
 var gravity_direction: Vector2 = Vector2.UP
 var death_count: int = 0
 var points: int = 0 # Menyimpan perolehan skor koin
+var collected_coins: Dictionary = {} # Menyimpan ID koin yang sudah didapatkan agar tidak muncul lagi
 
 # --- PROTOTYPE MEKANIK METRONOME & EFEK TRANSISI ---
 var is_order_phase: bool = true # True = Order (Tick), False = Disorder (Tock)
@@ -96,6 +97,13 @@ func _input(event: InputEvent) -> void:
 		SaveManager.delete_current_save()
 
 # --- HELPER PINDAH SCENE & SAVE GAME ---
+func reset_game_state() -> void:
+	points = 0
+	current_level = 1
+	checkpoint_position = Vector2(0, 20)
+	collected_coins.clear()
+	SaveManager.delete_current_save()
+
 func change_level(new_level: int, scene_path: String) -> void:
 	current_level = new_level
 	checkpoint_position = Vector2.ZERO # Reset posisi checkpoint saat masuk scene level baru

@@ -20,10 +20,7 @@ func _ready() -> void:
 	btn_continue.pressed.connect(func(): Global.load_saved_scene())
 	
 	btn_new.pressed.connect(func():
-		SaveManager.delete_current_save()
-		Global.points = 0
-		Global.current_level = 1
-		Global.checkpoint_position = Vector2(0, 20)
+		Global.reset_game_state()
 		get_tree().change_scene_to_file("res://scene/level1.tscn")
 	)
 	btn_exit.pressed.connect(func(): get_tree().quit())
