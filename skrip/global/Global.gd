@@ -15,6 +15,7 @@ var shader_mat: ShaderMaterial
 var bgm_player: AudioStreamPlayer
 var sfx_transition: AudioStreamPlayer
 var anomaly_drone: AudioStreamPlayer
+var sfx_button_click: AudioStreamPlayer
 var disorder_timer: float = 0.0 # Menghitung lama tinggal di mode non-normal (Disorder)
 
 func _ready() -> void:
@@ -73,6 +74,37 @@ func _ready() -> void:
 		anomaly_drone.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(anomaly_drone)
 
+	# 6. Pasang efek suara tombol menu (Button Click SFX) dan hubungkan ke semua tombol!
+	sfx_button_click = AudioStreamPlayer.new()
+	var tap_stream = load("res://asset/brackeys_platformer_assets/sounds/tap.wav")
+	if tap_stream:
+		sfx_button_click.stream = tap_stream
+		sfx_button_click.volume_db = 2.0
+		sfx_button_click.process_mode = Node.PROCESS_MODE_ALWAYS # Agar tetap berbunyi saat game di-pause!
+		add_child(sfx_button_click)
+	
+	if get_tree():
+		get_tree().node_added.connect(_on_node_added)
+		_connect_buttons_recursive(get_tree().root)
+
+func play_click_sfx() -> void:
+	if sfx_button_click:
+		sfx_button_click.pitch_scale = randf_range(0.95, 1.05) # Efek klik renyah alami
+		sfx_button_click.play()
+
+func _on_node_added(node: Node) -> void:
+	if node is Button or node is TextureButton or node is LinkButton:
+		if not node.pressed.is_connected(play_click_sfx):
+			node.pressed.connect(play_click_sfx)
+	_connect_buttons_recursive(node)
+
+func _connect_buttons_recursive(node: Node) -> void:
+	if node is Button or node is TextureButton or node is LinkButton:
+		if not node.pressed.is_connected(play_click_sfx):
+			node.pressed.connect(play_click_sfx)
+	for child in node.get_children():
+		_connect_buttons_recursive(child)
+
 func _process(delta: float) -> void:
 	# Efek kegelapan bertahap & distorsi musik saat terlalu lama di mode Disorder (Non-Normal)
 	var current_scene = get_tree().current_scene if get_tree() else null
@@ -115,6 +147,10 @@ func toggle_phase() -> void:
 		shader_mat.set_shader_parameter("effect_strength", 1.0) # Pemicu gelombang glitch kejut
 		var tween_shader = create_tween()
 		tween_shader.tween_method(func(val): shader_mat.set_shader_parameter("effect_strength", val), 1.0, 0.0, 0.4).set_trans(Tween.TRANS_CUBIC)
+
+	var cam = get_viewport().get_camera_2d()
+	if cam:
+		create_tween().tween_method(func(v): cam.offset = Vector2(randf_range(-v, v), randf_range(-v, v)), 8.0, 0.0, 0.25)
 
 	# --- EFEK AUDIO TRANSISI (PITCH SHIFT & SFX) ---
 	if sfx_transition and sfx_transition.stream:

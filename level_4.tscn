@@ -39,16 +39,16 @@ sources/2 = SubResource("TileSetAtlasSource_lvl4b")
 [node name="Checkpoints" type="Node2D" parent="." unique_id=401020370]
 
 [node name="CheckPoint1" parent="Checkpoints" unique_id=401020371 instance=ExtResource("7_chk")]
-position = Vector2(1096, -72)
+position = Vector2(1096, -70.79414)
 
 [node name="CheckPoint2" parent="Checkpoints" unique_id=401020372 instance=ExtResource("7_chk")]
-position = Vector2(2098, -88)
+position = Vector2(2097.7734, -85.606155)
 
 [node name="CheckPoint6" parent="Checkpoints" unique_id=1881539585 instance=ExtResource("7_chk")]
 position = Vector2(2833, -197)
 
 [node name="CheckPoint3" parent="Checkpoints" unique_id=401020373 instance=ExtResource("7_chk")]
-position = Vector2(3327, -132)
+position = Vector2(3327, -132.28418)
 
 [node name="CheckPoint4" parent="Checkpoints" unique_id=401020374 instance=ExtResource("7_chk")]
 position = Vector2(4451, -147)
