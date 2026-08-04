@@ -7,11 +7,34 @@ var jump_count: int = 0
 var air_dash_used: bool = false
 var dash_timer: float = 0.0
 var start_position: Vector2
+var run_particles: CPUParticles2D
+var was_on_floor: bool = false
 
 func _ready() -> void:
 	SaveManager.load_game()
 	global_position = Global.checkpoint_position
 	start_position = global_position
+	
+	# Setup efek partikel debu lari di kaki pemain
+	run_particles = CPUParticles2D.new()
+	run_particles.position = Vector2(0, 13) # Pas di telapak kaki pemain
+	run_particles.amount = 8
+	run_particles.lifetime = 0.25
+	run_particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	run_particles.emission_rect_extents = Vector2(4, 2)
+	run_particles.direction = Vector2(-1, -0.5)
+	run_particles.gravity = Vector2(0, -25) # Debu mengepul naik sedikit ke atas
+	run_particles.initial_velocity_min = 15.0
+	run_particles.initial_velocity_max = 30.0
+	run_particles.scale_amount_min = 2.0
+	run_particles.scale_amount_max = 4.0
+	
+	var ramp = Gradient.new()
+	ramp.set_color(0, Color(1, 1, 1, 0.75)) # Putih terang
+	ramp.set_color(1, Color(1, 1, 1, 0.0))  # Pudar transparan
+	run_particles.color_ramp = ramp
+	run_particles.emitting = false
+	add_child(run_particles)
 	
 func _physics_process(delta):
 	# --- FITUR ADMIN / DEV FLY MODE (NO-CLIP / BEBAS TERBANG & TEMBUS KETIKA TEST LEVEL) ---
@@ -47,9 +70,11 @@ func _physics_process(delta):
 
 	if jump_buffer > 0 and (coyote_timer > 0 or jump_count < 2):
 		velocity.y = -jump_power
+		var is_double = (coyote_timer <= 0 and jump_count >= 1)
 		jump_count = 1 if (coyote_timer > 0) else 2
 		coyote_timer = 0.0; jump_buffer = 0.0 # Reset agar tidak lompat ganda berlebih
 		$JumpSound.play() # Putar efek suara lompat
+		spawn_jump_dust(is_double, false)
 
 	if Input.is_action_just_released("jump") and velocity.dot(Global.gravity_direction) < 0:
 		velocity *= 0.5
@@ -58,8 +83,13 @@ func _physics_process(delta):
 	if direction != 0:
 		$Sprite2D.play("Run")
 		$Sprite2D.flip_h = direction < 0
+		if run_particles:
+			run_particles.direction = Vector2(-direction, -0.4)
 	else:
 		$Sprite2D.play("Idle")
+		
+	if run_particles:
+		run_particles.emitting = is_on_floor() and abs(velocity.x) > 10.0
 
 	var on_ice = false
 	var conveyor_push = 0.0
@@ -105,7 +135,71 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+	# Efek kejut debu saat mendarat di atas tanah setelah melayang dari udara!
+	if is_on_floor() and not was_on_floor:
+		spawn_jump_dust(false, true)
+	was_on_floor = is_on_floor()
+
 	# Kembali ke posisi awal jika jatuh melewati batas Y (jurang/void)
 	if global_position.y > 400.0:
 		global_position = start_position
 		velocity = Vector2.ZERO
+
+# --- EFEK DEBU KAKI (PARTICULATE DUST VIRTUAL) ---
+func spawn_jump_dust(is_double: bool = false, is_landing: bool = false) -> void:
+	var dust = CPUParticles2D.new()
+	get_parent().add_child(dust)
+	dust.global_position = global_position + Vector2(0, 13) # Posisi telapak kaki
+	dust.emitting = true
+	dust.one_shot = true
+	dust.explosiveness = 1.0
+	dust.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	
+	var ramp = Gradient.new()
+	
+	if is_double:
+		# Efek Double Jump di udara: Ledakan cincin debu berputar ke segala arah!
+		dust.amount = 24
+		dust.lifetime = 0.35
+		dust.emission_rect_extents = Vector2(8, 3)
+		dust.spread = 180.0
+		dust.initial_velocity_min = 40.0
+		dust.initial_velocity_max = 85.0
+		dust.scale_amount_min = 3.0
+		dust.scale_amount_max = 6.0
+		dust.gravity = Vector2(0, 45)
+		# Sentuhan warna cerah sesuai mode atmosfer (Order vs Disorder)
+		var start_col = Color(0.9, 0.98, 1.0, 0.95) if Global.is_order_phase else Color(1.0, 0.7, 0.8, 0.95)
+		ramp.set_color(0, start_col)
+		ramp.set_color(1, Color(start_col.r, start_col.g, start_col.b, 0.0))
+	elif is_landing:
+		# Efek Mendarat: Hembusan debu mendatar ke kanan & kiri tatak lantai
+		dust.amount = 14
+		dust.lifetime = 0.25
+		dust.emission_rect_extents = Vector2(10, 2)
+		dust.direction = Vector2(0, -1) # Sedikit terdorong ke atas tatak lantai
+		dust.spread = 75.0
+		dust.initial_velocity_min = 25.0
+		dust.initial_velocity_max = 55.0
+		dust.scale_amount_min = 2.0
+		dust.scale_amount_max = 5.0
+		dust.gravity = Vector2(0, -15)
+		ramp.set_color(0, Color(1, 1, 1, 0.8))
+		ramp.set_color(1, Color(1, 1, 1, 0.0))
+	else:
+		# Efek Lompat Dasar: Tolakan debu ke bawah lantai
+		dust.amount = 12
+		dust.lifetime = 0.3
+		dust.emission_rect_extents = Vector2(6, 2)
+		dust.direction = Vector2(0, 1) # Menolak ke bawah lantai
+		dust.spread = 60.0
+		dust.initial_velocity_min = 30.0
+		dust.initial_velocity_max = 65.0
+		dust.scale_amount_min = 2.5
+		dust.scale_amount_max = 5.0
+		dust.gravity = Vector2(0, 20)
+		ramp.set_color(0, Color(1, 1, 1, 0.85))
+		ramp.set_color(1, Color(1, 1, 1, 0.0))
+		
+	dust.color_ramp = ramp
+	dust.finished.connect(dust.queue_free) # Bersihkan otomatis setelah meledak!
