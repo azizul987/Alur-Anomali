@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="7_chk"]
 [ext_resource type="PackedScene" path="res://object/coin.tscn" id="8_coin"]
 [ext_resource type="PackedScene" path="res://object/next_level.tscn" id="9_nxt"]
+[ext_resource type="PackedScene" uid="uid://dufox8gak535h" path="res://object/tutor_sign.tscn" id="10_tutor"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n60ys"]
 texture = ExtResource("1_a215g")
@@ -143,6 +144,20 @@ script = ExtResource("6_dynbg")
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." unique_id=629481039 instance=ExtResource("4_player")]
+
+[node name="Tutorials" type="Node2D" parent="." unique_id=103928471]
+
+[node name="TutorSign_Shadow" parent="Tutorials" unique_id=482910395 instance=ExtResource("10_tutor")]
+position = Vector2(120, 0)
+message = "Tekan 'M' di udara untuk mewujudkan platform bayangan selanjutnya!"
+
+[node name="TutorSign_Shift" parent="Tutorials" unique_id=849301934 instance=ExtResource("10_tutor")]
+position = Vector2(1060, -20)
+message = "Naiki Elevator Shift, lalu tekan 'M' untuk meluncur ke dimensi atas!"
+
+[node name="TutorSign_Bounce" parent="Tutorials" unique_id=983021948 instance=ExtResource("10_tutor")]
+position = Vector2(2080, -80)
+message = "Lantai rapuh akan runtuh! Lompati Trampolin untuk melintasi jurang!"
 
 [node name="Platforms" type="Node2D" parent="." unique_id=381920394]
 
