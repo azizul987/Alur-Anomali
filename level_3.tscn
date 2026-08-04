@@ -1,0 +1,280 @@
+[gd_scene format=4 uid="uid://bo4b3nj5hj4b0"]
+
+[ext_resource type="Texture2D" uid="uid://4ktsqa7o345x" path="res://asset/Lantai_tes.png" id="1_tex1"]
+[ext_resource type="Texture2D" uid="uid://d0bxgw2ahqh7h" path="res://asset/Pixel Adventure 1/Terrain/Terrain (16x16).png" id="2_tex2"]
+[ext_resource type="PackedScene" uid="uid://cd5wab2mnru77" path="res://scene/platform.tscn" id="3_plat"]
+[ext_resource type="PackedScene" uid="uid://cbg8go40i77bj" path="res://object/player.tscn" id="4_player"]
+[ext_resource type="Texture2D" uid="uid://d2763iuft8b1h" path="res://asset/bg_sky2.png" id="5_bg"]
+[ext_resource type="Script" uid="uid://dkddfptbip8ab" path="res://skrip/dynamic_bg.gd" id="6_dynbg"]
+[ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="7_chk"]
+[ext_resource type="PackedScene" path="res://object/coin.tscn" id="8_coin"]
+[ext_resource type="PackedScene" path="res://object/next_level.tscn" id="9_nxt"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n60ys"]
+texture = ExtResource("1_tex1")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6xka4"]
+texture = ExtResource("2_tex2")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+6:0/0 = 0
+6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:0/0 = 0
+7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+8:0/0 = 0
+8:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+9:0/0 = 0
+10:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+17:0/0 = 0
+18:0/0 = 0
+19:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+6:1/0 = 0
+6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+8:1/0 = 0
+8:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+9:1/0 = 0
+10:1/0 = 0
+12:1/0 = 0
+13:1/0 = 0
+14:1/0 = 0
+15:1/0 = 0
+17:1/0 = 0
+18:1/0 = 0
+19:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+6:2/0 = 0
+6:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:2/0 = 0
+7:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+8:2/0 = 0
+8:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+13:2/0 = 0
+14:2/0 = 0
+15:2/0 = 0
+17:2/0 = 0
+18:2/0 = 0
+19:2/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+8:4/0 = 0
+9:4/0 = 0
+10:4/0 = 0
+12:4/0 = 0
+13:4/0 = 0
+14:4/0 = 0
+15:4/0 = 0
+15:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+17:4/0 = 0
+18:4/0 = 0
+19:4/0 = 0
+20:4/0 = 0
+21:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+8:5/0 = 0
+9:5/0 = 0
+10:5/0 = 0
+12:5/0 = 0
+13:5/0 = 0
+14:5/0 = 0
+15:5/0 = 0
+15:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+17:5/0 = 0
+18:5/0 = 0
+19:5/0 = 0
+20:5/0 = 0
+21:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+6:6/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_lvl3"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_n60ys")
+sources/1 = SubResource("TileSetAtlasSource_6xka4")
+
+[node name="level3" type="Node2D" unique_id=460241197]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=592810384]
+tile_map_data = PackedByteArray("AAD8/wEAAQAHAAAAAAD9/wEAAQAHAAAAAAD+/wEAAQAHAAAAAAD//wEAAQAHAAAAAAAAAAEAAQAHAAAAAAABAAEAAQAHAAAAAAACAAEAAQAHAAAAAAADAAEAAQAHAAAAAAAEAAEAAQAHAAAAAAAFAAEAAQAHAAAAAAAzAP//AQAHAAAAAAA0AP//AQAHAAAAAAA1AP//AQAHAAAAAAA2AP//AQAHAAAAAAA3AP//AQAHAAAAAABoAP7/AQAHAAAAAABpAP7/AQAHAAAAAABqAP7/AQAHAAAAAACYAPz/AQAHAAAAAACZAPz/AQAHAAAAAACaAPz/AQAHAAAAAACbAPz/AQAHAAAAAACcAPz/AQAHAAAAAADYAPb/AQAHAAAAAADZAPb/AQAHAAAAAADaAPb/AQAHAAAAAADbAPb/AQAHAAAAAADcAPb/AQAHAAAAAAA=")
+tile_set = SubResource("TileSet_lvl3")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=629381029]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=492019384]
+motion_scale = Vector2(0.3, 0)
+motion_mirroring = Vector2(768, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=739201938]
+texture_repeat = 2
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_bg")
+centered = false
+script = ExtResource("6_dynbg")
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." unique_id=983719283 instance=ExtResource("4_player")]
+
+[node name="Platforms" type="Node2D" parent="." unique_id=748291839]
+
+[node name="Sesi1_Pendulum1" parent="Platforms" unique_id=192837495 instance=ExtResource("3_plat")]
+position = Vector2(220, 0)
+tipe_dropdown = 1
+is_pendulum = true
+
+[node name="Sesi1_Pendulum2" parent="Platforms" unique_id=293847586 instance=ExtResource("3_plat")]
+position = Vector2(420, -20)
+tipe_dropdown = 1
+is_pendulum = true
+
+[node name="Sesi1_Pendulum3" parent="Platforms" unique_id=384756297 instance=ExtResource("3_plat")]
+position = Vector2(620, -10)
+tipe_dropdown = 1
+is_pendulum = true
+
+[node name="Sesi2_MoveTouch1" parent="Platforms" unique_id=485769302 instance=ExtResource("3_plat")]
+position = Vector2(1020, -20)
+tipe_dropdown = 7
+move_offset = Vector2(140, 0)
+disorder_offset = Vector2(140, 0)
+move_speed = 1.3
+move_on_touch = true
+
+[node name="Sesi2_SafeIsland" parent="Platforms" unique_id=556677889 instance=ExtResource("3_plat")]
+position = Vector2(1250, -20)
+
+[node name="Sesi2_MoveTouch2" parent="Platforms" unique_id=596870413 instance=ExtResource("3_plat")]
+position = Vector2(1440, -20)
+tipe_dropdown = 7
+move_offset = Vector2(140, 0)
+disorder_offset = Vector2(140, 0)
+move_speed = 1.3
+move_on_touch = true
+
+[node name="Sesi3_Rewind1" parent="Platforms" unique_id=607981524 instance=ExtResource("3_plat")]
+position = Vector2(1860, -40)
+tipe_dropdown = 4
+move_offset = Vector2(130, 0)
+disorder_offset = Vector2(130, 0)
+move_speed = 1.3
+is_memory_rewind = true
+
+[node name="Sesi3_SafeIsland" parent="Platforms" unique_id=658091625 instance=ExtResource("3_plat")]
+position = Vector2(2060, -40)
+
+[node name="Sesi3_Rewind2" parent="Platforms" unique_id=718092635 instance=ExtResource("3_plat")]
+position = Vector2(2240, -50)
+tipe_dropdown = 4
+move_offset = Vector2(140, -20)
+disorder_offset = Vector2(140, -20)
+move_speed = 1.4
+is_memory_rewind = true
+
+[node name="Sesi4_ComboConveyor" parent="Platforms" unique_id=829103746 instance=ExtResource("3_plat")]
+position = Vector2(2660, -60)
+conveyor_speed = 220.0
+
+[node name="Sesi4_ComboTrampoline" parent="Platforms" unique_id=930214857 instance=ExtResource("3_plat")]
+position = Vector2(2850, -60)
+bounce_power = 600.0
+
+[node name="Sesi4_ComboOrbit" parent="Platforms" unique_id=142536475 instance=ExtResource("3_plat")]
+position = Vector2(3080, -180)
+orbit_radius = 70.0
+
+[node name="Sesi4_ComboVanish" parent="Platforms" unique_id=253647586 instance=ExtResource("3_plat")]
+position = Vector2(3280, -160)
+tipe_dropdown = 6
+disappear_on_touch = true
+
+[node name="CheckPoints" type="Node2D" parent="." unique_id=849203918]
+
+[node name="CheckPoint1" parent="CheckPoints" unique_id=364758697 instance=ExtResource("7_chk")]
+position = Vector2(840, -20)
+
+[node name="CheckPoint2" parent="CheckPoints" unique_id=475869708 instance=ExtResource("7_chk")]
+position = Vector2(1680, -30)
+
+[node name="CheckPoint3" parent="CheckPoints" unique_id=586970819 instance=ExtResource("7_chk")]
+position = Vector2(2460, -60)
+
+[node name="Coins" type="Node2D" parent="." unique_id=938291048]
+
+[node name="Coin1" parent="Coins" unique_id=697081920 instance=ExtResource("8_coin")]
+position = Vector2(220, -55)
+
+[node name="Coin2" parent="Coins" unique_id=708192031 instance=ExtResource("8_coin")]
+position = Vector2(420, -75)
+
+[node name="Coin3" parent="Coins" unique_id=819203142 instance=ExtResource("8_coin")]
+position = Vector2(620, -65)
+
+[node name="Coin4" parent="Coins" unique_id=920314253 instance=ExtResource("8_coin")]
+position = Vector2(1020, -75)
+
+[node name="Coin5" parent="Coins" unique_id=132435465 instance=ExtResource("8_coin")]
+position = Vector2(1250, -75)
+
+[node name="Coin6" parent="Coins" unique_id=243546576 instance=ExtResource("8_coin")]
+position = Vector2(1440, -75)
+
+[node name="Coin7" parent="Coins" unique_id=354657687 instance=ExtResource("8_coin")]
+position = Vector2(1680, -85)
+
+[node name="Coin8" parent="Coins" unique_id=465768798 instance=ExtResource("8_coin")]
+position = Vector2(1860, -95)
+
+[node name="Coin9" parent="Coins" unique_id=576879809 instance=ExtResource("8_coin")]
+position = Vector2(2060, -95)
+
+[node name="Coin10" parent="Coins" unique_id=687980910 instance=ExtResource("8_coin")]
+position = Vector2(2240, -105)
+
+[node name="Coin11" parent="Coins" unique_id=798091021 instance=ExtResource("8_coin")]
+position = Vector2(2660, -115)
+
+[node name="Coin12" parent="Coins" unique_id=809102132 instance=ExtResource("8_coin")]
+position = Vector2(2850, -125)
+
+[node name="Coin13" parent="Coins" unique_id=910213243 instance=ExtResource("8_coin")]
+position = Vector2(2960, -200)
+
+[node name="Coin14" parent="Coins" unique_id=102132435 instance=ExtResource("8_coin")]
+position = Vector2(3080, -240)
+
+[node name="Coin15" parent="Coins" unique_id=213243546 instance=ExtResource("8_coin")]
+position = Vector2(3280, -215)
+
+[node name="NextLevel" parent="." unique_id=324354657 instance=ExtResource("9_nxt")]
+position = Vector2(3500, -160)
+next_scene = "res://level_4.tscn"
+next_level_number = 4

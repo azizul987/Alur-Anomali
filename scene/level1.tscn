@@ -413,6 +413,8 @@ position = Vector2(2291, -157)
 
 [node name="NextLevel" parent="." unique_id=1160929635 instance=ExtResource("10_kjjd3")]
 position = Vector2(3681, -268)
+next_scene = "res://level_2.tscn"
+next_level_number = 2
 
 [node name="Tutor1" parent="." unique_id=1035338051 instance=ExtResource("11_tutor")]
 position = Vector2(1053, 8)

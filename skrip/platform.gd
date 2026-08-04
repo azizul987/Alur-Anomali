@@ -10,7 +10,9 @@ enum TipePlatform {
 	DISAPPEAR_ON_TOUCH = 6,
 	MOVE_ON_TOUCH = 7,
 	SHIFT_ON_MODE = 8,
-	SHADOW_ORDER = 9
+	SHADOW_ORDER = 9,
+	TREADMILL_NORMAL = 10,
+	TREADMILL_DISORDER = 11
 }
 
 @export_group("Dropdown Pilihan Tipe Platform")
@@ -46,6 +48,8 @@ enum TipePlatform {
 @export var move_on_touch: bool = false
 @export var shift_on_mode: bool = false
 @export var shadow_on_order: bool = false
+@export var is_treadmill_normal: bool = false
+@export var is_treadmill_disorder: bool = false
 
 var origin_pos: Vector2
 var history: Array[Vector2] = []
@@ -53,6 +57,7 @@ var cur_angle: float = 0.0
 var is_falling: bool = false
 var has_been_touched: bool = false
 var move_timer: float = 0.0
+var last_order_state: bool = true
 
 func _ready() -> void:
 	# Sinkronisasi dari menu Dropdown murni ke logika sistem:
@@ -66,6 +71,12 @@ func _ready() -> void:
 		TipePlatform.MOVE_ON_TOUCH: move_on_touch = true
 		TipePlatform.SHIFT_ON_MODE: shift_on_mode = true
 		TipePlatform.SHADOW_ORDER: shadow_on_order = true
+		TipePlatform.TREADMILL_NORMAL:
+			is_treadmill_normal = true
+			if conveyor_speed == 0.0: conveyor_speed = 280.0
+		TipePlatform.TREADMILL_DISORDER:
+			is_treadmill_disorder = true
+			if conveyor_speed == 0.0: conveyor_speed = 280.0
 
 	origin_pos = position
 
@@ -96,6 +107,14 @@ func _ready() -> void:
 		$Area2D.body_entered.connect(_on_area_2d_body_entered)
 
 func _physics_process(_delta: float) -> void:
+	# Reset state jika pemain mengganti mode agar platform kembali diam seperti awal
+	if Global.is_order_phase != last_order_state:
+		last_order_state = Global.is_order_phase
+		if move_on_touch:
+			has_been_touched = false
+			position = origin_pos
+			move_timer = 0.0
+
 	# 1. Mekanik Pendulum Platform (Ayunan jam)
 	if is_pendulum:
 		rotation = sin(Time.get_ticks_msec() * 0.001 * (2.0 if Global.is_order_phase else 7.0)) * 0.6
@@ -122,12 +141,18 @@ func _physics_process(_delta: float) -> void:
 		position.y += _delta * (120.0 if Global.is_order_phase else 380.0)
 		if position.y > origin_pos.y + 400.0: is_falling = false; position = origin_pos
 
-	# 5. Mekanik Memory / Time-Reversal Platform (Rewind rute mundur saat Order)
-	if is_memory_rewind and not Global.is_order_phase:
-		history.append(position)
-		if history.size() > 300: history.pop_front()
-	elif is_memory_rewind and history.size() > 0:
-		position = history.pop_back(); return # Hentikan gerakan biasa demi rewind mundur!
+	# 5. Mekanik Memory / Time-Reversal Platform (Hanya aktif untuk platform yang bergerak di fase Disorder)
+	if is_memory_rewind and disorder_offset != Vector2.ZERO:
+		if not Global.is_order_phase:
+			history.append(position)
+			if history.size() > 300: history.pop_front()
+		else:
+			if history.size() > 0:
+				position = history.pop_back()
+			else:
+				position = origin_pos
+				move_timer = 0.0
+			return # STOP! State diperbarui kembali diam sempurna setelah rewind selesai!
 
 	# 6. Mekanik Shift Pada Pergantian Mode (Diam di Posisi A saat Order, Bergeser tegap ke Posisi B saat Disorder)
 	if shift_on_mode:

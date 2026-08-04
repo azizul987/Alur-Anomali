@@ -68,7 +68,13 @@ func _physics_process(delta):
 		if col:
 			if "is_ice" in col and col.is_ice: on_ice = true
 			if "conveyor_speed" in col and col.conveyor_speed != 0:
-				conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
+				var spd = abs(col.conveyor_speed)
+				if "is_treadmill_normal" in col and col.is_treadmill_normal:
+					conveyor_push = spd if Global.is_order_phase else -spd
+				elif "is_treadmill_disorder" in col and col.is_treadmill_disorder:
+					conveyor_push = spd if not Global.is_order_phase else -spd
+				else:
+					conveyor_push = col.conveyor_speed * (1.2 if Global.is_order_phase else -2.5)
 			if col.has_method("trigger_touch"):
 				col.trigger_touch(self)
 			elif "has_been_touched" in col:
