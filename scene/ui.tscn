@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cy75ui8hud2p1"]
+
+[ext_resource type="Script" path="res://skrip/ui.gd" id="1_ui_scr"]
+[ext_resource type="Texture2D" path="res://asset/brackeys_platformer_assets/sprites/coin.png" id="2_coin_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_coin_icon"]
+atlas = ExtResource("2_coin_tex")
+region = Rect2(0, 0, 16, 16)
+
+[node name="UI" type="CanvasLayer"]
+layer = 15
+script = ExtResource("1_ui_scr")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="TopLeft" type="VBoxContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 180.0
+offset_bottom = 76.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="RowCoins" type="HBoxContainer" parent="HUD/TopLeft"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="CoinIcon" type="TextureRect" parent="HUD/TopLeft/RowCoins"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = SubResource("AtlasTexture_coin_icon")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="PointsLabel" type="Label" parent="HUD/TopLeft/RowCoins"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="LevelLabel" type="Label" parent="HUD/TopLeft"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "Level 1"

@@ -5,6 +5,7 @@ var checkpoint_position: Vector2 = Vector2.ZERO
 var current_rule: int = 0
 var gravity_direction: Vector2 = Vector2.UP
 var death_count: int = 0
+var points: int = 0 # Menyimpan perolehan skor koin
 
 # --- PROTOTYPE MEKANIK METRONOME & EFEK TRANSISI ---
 var is_order_phase: bool = true # True = Order (Tick), False = Disorder (Tock)
@@ -30,6 +31,11 @@ func _ready() -> void:
 	shader_mat = ShaderMaterial.new()
 	shader_mat.shader = load("res://skrip/shader/transition.gdshader")
 	screen_rect.material = shader_mat
+	
+	# 3. Pasang HUD antarmuka UI (Poin & Level) secara global dan otomatis ke dalam game
+	var ui_scene = load("res://scene/ui.tscn")
+	if ui_scene:
+		add_child(ui_scene.instantiate())
 
 func toggle_phase() -> void:
 	is_order_phase = not is_order_phase
@@ -57,3 +63,13 @@ func _input(event: InputEvent) -> void:
 		Global.gravity_direction = Global.gravity_direction.rotated(PI / 2.0).round()
 	if event.is_action_pressed("reset_save"):
 		SaveManager.delete_current_save()
+
+# --- HELPER PINDAH SCENE & SAVE GAME ---
+func change_level(new_level: int, scene_path: String) -> void:
+	current_level = new_level
+	checkpoint_position = Vector2.ZERO # Reset posisi checkpoint saat masuk scene level baru
+	SaveManager.save_game()
+	get_tree().change_scene_to_file(scene_path)
+
+func load_saved_scene() -> void:
+	SaveManager.load_game(true) # Argumen true memicu perpindahan scene jika berbeda dari yang tersimpan

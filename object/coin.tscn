@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://c7k2coinsu3id"]
+
+[ext_resource type="Script" path="res://skrip/coin.gd" id="1_c_script"]
+[ext_resource type="Texture2D" path="res://asset/brackeys_platformer_assets/sprites/coin.png" id="2_c_tex"]
+[ext_resource type="AudioStream" path="res://asset/brackeys_platformer_assets/sounds/coin.wav" id="3_c_snd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_coin"]
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_spin"]
+resource_name = "spin"
+length = 1.2
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_coins"]
+_data = {
+"spin": SubResource("Animation_spin")
+}
+
+[node name="Coin" type="Area2D"]
+script = ExtResource("1_c_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_c_tex")
+hframes = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_coin")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_c_snd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_coins")
+}
+autoplay = "spin"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

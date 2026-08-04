@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dufox8gak535h"]
+
+[ext_resource type="Script" uid="uid://byhoxjbudbl63" path="res://skrip/tutor_sign.gd" id="1_ts_script"]
+[ext_resource type="FontFile" uid="uid://bgj0m7o0vpyqi" path="res://object/BPdotsSquareBold.otf" id="2_82ce5"]
+[ext_resource type="AudioStream" uid="uid://dgy64t2ne0t15" path="res://asset/brackeys_platformer_assets/sounds/tap.wav" id="2_ts_snd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ts"]
+size = Vector2(96, 80)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ts"]
+bg_color = Color(0.17215967, 0.37211627, 0.20003006, 0.92156863)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 4
+
+[node name="Tutor1" type="Area2D" unique_id=1165786802]
+script = ExtResource("1_ts_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1903121811]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_ts")
+
+[node name="Marker" type="Label" parent="." unique_id=1782460223]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 4.0
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "[ ! ]"
+horizontal_alignment = 1
+
+[node name="Tooltip" type="Control" parent="." unique_id=1888496483]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -110.0
+offset_top = -90.0
+offset_right = 110.0
+offset_bottom = -30.0
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Tooltip" unique_id=1559453246]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ts")
+
+[node name="MarginContainer" type="MarginContainer" parent="Tooltip/PanelContainer" unique_id=1800495137]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="Tooltip/PanelContainer/MarginContainer" unique_id=468694136]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_82ce5")
+theme_override_font_sizes/font_size = 14
+text = "Tekan [M] untuk ganti mode"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="." unique_id=1072735468]
+stream = ExtResource("2_ts_snd")
+volume_db = 2.0

@@ -7,6 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://d2763iuft8b1h" path="res://asset/bg_sky2.png" id="5_kjjd3"]
 [ext_resource type="Texture2D" uid="uid://b85ekehus2pcc" path="res://asset/brackeys_platformer_assets/sprites/slime_green.png" id="6_e6f45"]
 [ext_resource type="Script" uid="uid://dkddfptbip8ab" path="res://skrip/dynamic_bg.gd" id="7_dynbg"]
+[ext_resource type="PackedScene" uid="uid://cx4v8g0qn4h5o" path="res://object/checkpoint.tscn" id="8_3ud3r"]
+[ext_resource type="PackedScene" path="res://object/coin.tscn" id="9_coin"]
+[ext_resource type="PackedScene" path="res://object/next_level.tscn" id="10_kjjd3"]
+[ext_resource type="PackedScene" uid="uid://dufox8gak535h" path="res://object/tutor_sign.tscn" id="11_tutor"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n60ys"]
 texture = ExtResource("1_a215g")
@@ -232,7 +236,6 @@ position = Vector2(321, 67)
 
 [node name="Platform3" parent="Plat/Part1" unique_id=405825984 instance=ExtResource("3_3ud3r")]
 position = Vector2(475, 67)
-disappear_on_touch = true
 
 [node name="Platform4" parent="Plat/Part1" unique_id=1183014088 instance=ExtResource("3_3ud3r")]
 position = Vector2(680, 67)
@@ -245,10 +248,11 @@ move_offset = Vector2(0, 170)
 
 [node name="PArt2" type="Node2D" parent="Plat" unique_id=1271331407]
 
-[node name="Platform6" parent="Plat/PArt2" unique_id=69415530 node_paths=PackedStringArray("target_node_order") instance=ExtResource("3_3ud3r")]
+[node name="Platform6" parent="Plat/PArt2" unique_id=69415530 node_paths=PackedStringArray("target_node_order", "target_node_disorder") instance=ExtResource("3_3ud3r")]
 position = Vector2(1248, -108)
 tipe_dropdown = 2
 target_node_order = NodePath("Marker2D")
+target_node_disorder = NodePath("Marker2D")
 move_in_tiles_order = Vector2(6, 0)
 move_speed = 0.5
 
@@ -271,7 +275,6 @@ move_speed = 0.5
 position = Vector2(1929, -101)
 tipe_dropdown = 5
 move_speed = 0.5
-shadow_on_order = true
 
 [node name="Part4_Puzzle" type="Node2D" parent="Plat" unique_id=1405583589]
 position = Vector2(161, -27)
@@ -306,6 +309,80 @@ tipe_dropdown = 6
 [node name="Player" parent="." unique_id=970081529 instance=ExtResource("4_ldwqa")]
 position = Vector2(-61, -54)
 
+[node name="Coins" type="Node2D" parent="." unique_id=839201928]
+
+[node name="Coin1" parent="Coins" unique_id=920192837 instance=ExtResource("9_coin")]
+position = Vector2(-34, -33)
+
+[node name="Coin2" parent="Coins" unique_id=920192838 instance=ExtResource("9_coin")]
+position = Vector2(44, -22)
+
+[node name="Coin3" parent="Coins" unique_id=920192839 instance=ExtResource("9_coin")]
+position = Vector2(220, -22)
+
+[node name="Coin4" parent="Coins" unique_id=205294768 instance=ExtResource("9_coin")]
+position = Vector2(539, -20)
+
+[node name="Coin5" parent="Coins" unique_id=57038238 instance=ExtResource("9_coin")]
+position = Vector2(706, -25)
+
+[node name="Coin6" parent="Coins" unique_id=1579111565 instance=ExtResource("9_coin")]
+position = Vector2(907, -17)
+
+[node name="Coin7" parent="Coins" unique_id=29660500 instance=ExtResource("9_coin")]
+position = Vector2(1052, -174)
+
+[node name="Coin8" parent="Coins" unique_id=944709894 instance=ExtResource("9_coin")]
+position = Vector2(1382, -171)
+
+[node name="Coin9" parent="Coins" unique_id=2098536250 instance=ExtResource("9_coin")]
+position = Vector2(1262, -185)
+
+[node name="Coin10" parent="Coins" unique_id=1380528285 instance=ExtResource("9_coin")]
+position = Vector2(1691, -173)
+
+[node name="Coin11" parent="Coins" unique_id=873080225 instance=ExtResource("9_coin")]
+position = Vector2(1579, -153)
+
+[node name="Coin12" parent="Coins" unique_id=1413158477 instance=ExtResource("9_coin")]
+position = Vector2(1866, -171)
+
+[node name="Coin13" parent="Coins" unique_id=1700849535 instance=ExtResource("9_coin")]
+position = Vector2(2061, -192)
+
+[node name="Coin14" parent="Coins" unique_id=1566172986 instance=ExtResource("9_coin")]
+position = Vector2(2215, -191)
+
+[node name="Coin15" parent="Coins" unique_id=468487478 instance=ExtResource("9_coin")]
+position = Vector2(2422, -182)
+
+[node name="Coin16" parent="Coins" unique_id=468795423 instance=ExtResource("9_coin")]
+position = Vector2(2528, -200)
+
+[node name="Coin17" parent="Coins" unique_id=1519348365 instance=ExtResource("9_coin")]
+position = Vector2(2646, -202)
+
+[node name="Coin18" parent="Coins" unique_id=1151681530 instance=ExtResource("9_coin")]
+position = Vector2(2800, -210)
+
+[node name="Coin19" parent="Coins" unique_id=1416867947 instance=ExtResource("9_coin")]
+position = Vector2(2998, -273)
+
+[node name="Coin20" parent="Coins" unique_id=2096145074 instance=ExtResource("9_coin")]
+position = Vector2(3236, -318)
+
+[node name="Coin21" parent="Coins" unique_id=1495248728 instance=ExtResource("9_coin")]
+position = Vector2(3332, -333)
+
+[node name="Coin22" parent="Coins" unique_id=1195821725 instance=ExtResource("9_coin")]
+position = Vector2(3388, -412)
+
+[node name="Coin23" parent="Coins" unique_id=346586228 instance=ExtResource("9_coin")]
+position = Vector2(3474, -311)
+
+[node name="Coin24" parent="Coins" unique_id=625464096 instance=ExtResource("9_coin")]
+position = Vector2(3560, -343)
+
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=2122130079]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=810473212]
@@ -331,4 +408,14 @@ frame_progress = 0.0073821344
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1599225275]
 shape = SubResource("CircleShape2D_njpbr")
 
-[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=65846252]
+[node name="Checkpoint" parent="." unique_id=1536152783 instance=ExtResource("8_3ud3r")]
+position = Vector2(2291, -157)
+
+[node name="NextLevel" parent="." unique_id=1160929635 instance=ExtResource("10_kjjd3")]
+position = Vector2(3681, -268)
+
+[node name="Tutor1" parent="." unique_id=1035338051 instance=ExtResource("11_tutor")]
+position = Vector2(1053, 8)
+
+[node name="Tutor2" parent="." unique_id=1362023300 instance=ExtResource("11_tutor")]
+position = Vector2(1255, -160)

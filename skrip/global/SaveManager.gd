@@ -80,6 +80,10 @@ func save_game() -> void:
 		"x":Global.gravity_direction.x,
 		"y":Global.gravity_direction.y
 	}
+	data["points"] = Global.points
+	data["current_level"] = Global.current_level
+	if get_tree() and get_tree().current_scene:
+		data["scene_path"] = get_tree().current_scene.scene_file_path
 
 	#data["skill_tree_camera"]={
 		#"x":Point.skill_tree_camera.x,
@@ -100,7 +104,7 @@ func save_game() -> void:
 	write_save_data(data)
 
 
-func load_game() -> void:
+func load_game(change_scene_if_different: bool = false) -> void:
 	var data := read_save_data()
 	var checkpoint_position=data.get("chpos",Vector2(0,20))
 	Global.checkpoint_position=Vector2(
@@ -112,6 +116,12 @@ func load_game() -> void:
 		gravity_direction.x,
 		gravity_direction.y
 	)
+	Global.points = int(data.get("points", 0))
+	Global.current_level = int(data.get("current_level", 1))
+	
+	var saved_scene: String = data.get("scene_path", "res://scene/level1.tscn")
+	if change_scene_if_different and get_tree():
+		get_tree().change_scene_to_file(saved_scene)
 	#Point.point = float(data.get("point", 0))
 	#var cam_data:Dictionary=data.get("skill_tree_camera",{
 		#"x":0.0,
