@@ -17,6 +17,8 @@ var sfx_transition: AudioStreamPlayer
 var anomaly_drone: AudioStreamPlayer
 var disorder_timer: float = 0.0 # Menghitung lama tinggal di mode non-normal (Disorder)
 
+signal reset_trap
+
 func _ready() -> void:
 	# 1. Pasang pengubah warna atmosfer dunia (CanvasModulate)
 	canvas_mod = CanvasModulate.new()

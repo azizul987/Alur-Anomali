@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://c60d0p2js32n7"]
+
+[ext_resource type="Script" uid="uid://blvi56iruba8p" path="res://skrip/spike.gd" id="1_vi0yg"]
+[ext_resource type="Texture2D" uid="uid://bvumgy3f4n7d0" path="res://asset/Pixel Adventure 1/Traps/Spikes/Idle.png" id="1_xanym"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vi0yg"]
+size = Vector2(15, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dlj5e"]
+size = Vector2(15, 70)
+
+[node name="Spike" type="Node2D" unique_id=1918107574]
+y_sort_enabled = true
+script = ExtResource("1_vi0yg")
+
+[node name="VisualParent" type="Node2D" parent="." unique_id=189296253]
+
+[node name="Sprite2D" type="Sprite2D" parent="VisualParent" unique_id=347654972]
+texture = ExtResource("1_xanym")
+
+[node name="Damage" type="Area2D" parent="VisualParent" unique_id=1128205132]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualParent/Damage" unique_id=181253656]
+position = Vector2(-0.5, 4.5)
+shape = SubResource("RectangleShape2D_vi0yg")
+
+[node name="Trigger" type="Area2D" parent="." unique_id=19225649]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger" unique_id=342376493]
+position = Vector2(-0.5, -27)
+shape = SubResource("RectangleShape2D_dlj5e")
+
+[connection signal="body_entered" from="VisualParent/Damage" to="." method="_on_damage_body_entered"]
+[connection signal="body_entered" from="Trigger" to="." method="_on_trigger_body_entered"]

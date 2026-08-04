@@ -139,11 +139,15 @@ func _physics_process(delta):
 	if is_on_floor() and not was_on_floor:
 		spawn_jump_dust(false, true)
 	was_on_floor = is_on_floor()
-
-	# Kembali ke posisi awal jika jatuh melewati batas Y (jurang/void)
+			
 	if global_position.y > 400.0:
-		global_position = start_position
-		velocity = Vector2.ZERO
+		mati()
+		
+func mati():
+	global_position = start_position
+	velocity = Vector2.ZERO
+	Global.reset_trap.emit()
+	print("Anda Mati")
 
 # --- EFEK DEBU KAKI (PARTICULATE DUST VIRTUAL) ---
 func spawn_jump_dust(is_double: bool = false, is_landing: bool = false) -> void:

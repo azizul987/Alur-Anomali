@@ -19,6 +19,17 @@ enum TipePlatform {
 ## Pilih tipe platform menggunakan menu Dropdown murni di bawah ini:
 @export var tipe_dropdown: TipePlatform = TipePlatform.NORMAL
 
+enum WarnaPlatform {
+	HIJAU = 0,
+	COKELAT = 1,
+	KUNING = 2,
+	BIRU = 3
+}
+
+@export_group("Tampilan & Visual")
+## Pilih warna visual platform dari spritesheet:
+@export var warna_dropdown: WarnaPlatform = WarnaPlatform.HIJAU
+
 @export_group("Target Rute Mudah (Marker / Tile)")
 ## CARA 1 (Paling Gampang): Klik ikon pipet (eyedropper) dan pilih node/Marker2D tujuan di scene
 @export var target_node_order: Node2D
@@ -79,6 +90,9 @@ func _ready() -> void:
 			if conveyor_speed == 0.0: conveyor_speed = 280.0
 
 	origin_pos = position
+	
+	if has_node("Gerak"):
+		$Gerak.frame = warna_dropdown
 
 	# --- AUTO-KALKULASI RUTE KEMUDAHAN DESAIN LEVEL ---
 	# 1. Prioritas 1: Lewat Target Node (Pipet Eyedropper di Inspector)

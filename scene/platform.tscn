@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cd5wab2mnru77"]
 
 [ext_resource type="Script" uid="uid://csjp0eg7i68ay" path="res://skrip/platform.gd" id="1_wfaay"]
-[ext_resource type="Texture2D" uid="uid://6118344ojg8m" path="res://asset/brackeys_platformer_assets/sprites/platforms.png" id="2_eil6o"]
+[ext_resource type="Texture2D" uid="uid://bbht5l1cr2jbw" path="res://asset/brackeys_platformer_assets/sprites/platform.png" id="2_wfaay"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6xka4"]
 size = Vector2(32, 9)
@@ -10,8 +10,8 @@ size = Vector2(32, 9)
 script = ExtResource("1_wfaay")
 
 [node name="Gerak" type="Sprite2D" parent="." unique_id=1362064676]
-texture = ExtResource("2_eil6o")
-region_enabled = true
+texture = ExtResource("2_wfaay")
+vframes = 4
 region_rect = Rect2(15.843994, 0, 31.863083, 10.745231)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=108091424]
