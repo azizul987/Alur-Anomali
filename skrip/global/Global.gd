@@ -14,6 +14,8 @@ var canvas_mod: CanvasModulate
 var shader_mat: ShaderMaterial
 var bgm_player: AudioStreamPlayer
 var sfx_transition: AudioStreamPlayer
+var anomaly_drone: AudioStreamPlayer
+var disorder_timer: float = 0.0 # Menghitung lama tinggal di mode non-normal (Disorder)
 
 func _ready() -> void:
 	# 1. Pasang pengubah warna atmosfer dunia (CanvasModulate)
@@ -58,9 +60,48 @@ func _ready() -> void:
 		sfx_transition.stream = trans_stream
 		sfx_transition.volume_db = -5.0
 		add_child(sfx_transition)
+		
+	# 5. Pasang suara gemuruh atmosfer anomali (Drone Low Frequency)
+	anomaly_drone = AudioStreamPlayer.new()
+	var drone_stream = load("res://asset/brackeys_platformer_assets/sounds/explosion.wav")
+	if drone_stream:
+		if drone_stream is AudioStreamWAV:
+			drone_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		anomaly_drone.stream = drone_stream
+		anomaly_drone.volume_db = -80.0 # Hening total padaawalnya
+		anomaly_drone.pitch_scale = 0.25 # Distorsi suara sangat rendah
+		anomaly_drone.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(anomaly_drone)
+
+func _process(delta: float) -> void:
+	# Efek kegelapan bertahap & distorsi musik saat terlalu lama di mode Disorder (Non-Normal)
+	var current_scene = get_tree().current_scene if get_tree() else null
+	if current_scene and current_scene.scene_file_path.contains("level"):
+		if not is_order_phase:
+			disorder_timer += delta
+			# Proses menggelapkan memakan waktu 20 detik secara mulus untuk mencapai puncak kegelapan
+			var t = clampf(disorder_timer / 20.0, 0.0, 1.0)
+			
+			if canvas_mod and disorder_timer > 0.5:
+				var base_color = Color(0.7, 0.35, 0.45) # Warna meremang awal Disorder
+				var eclipse_color = Color(0.12, 0.05, 0.09) # Kegelapan pekat anomali yang mendebarkan!
+				canvas_mod.color = base_color.lerp(eclipse_color, t)
+				
+			if bgm_player and disorder_timer > 0.5:
+				# Musik perlahan semakin lambat dan mendalam (efek terdistorsi waktu)
+				bgm_player.pitch_scale = lerpf(0.84, 0.58, t)
+				
+			if anomaly_drone and disorder_timer > 2.0:
+				if not anomaly_drone.playing:
+					anomaly_drone.play()
+				# Suara gemuruh dimensi anomali makin intens saat dunia semakin gelap!
+				anomaly_drone.volume_db = lerpf(-40.0, -12.0, clampf((disorder_timer - 2.0) / 18.0, 0.0, 1.0))
+				anomaly_drone.pitch_scale = lerpf(0.35, 0.18, t)
 
 func toggle_phase() -> void:
 	is_order_phase = not is_order_phase
+	disorder_timer = 0.0 # Reset waktu kegelapan anomali
+	
 	if is_order_phase:
 		gravity_direction = Vector2.DOWN # Gravitasi stabil ke bawah saat Order
 
@@ -84,6 +125,12 @@ func toggle_phase() -> void:
 		var tween_audio = create_tween()
 		var target_pitch = 1.0 if is_order_phase else 0.84 # Order cerah ceria, Disorder agak merendah misterius
 		tween_audio.tween_property(bgm_player, "pitch_scale", target_pitch, 0.35).set_trans(Tween.TRANS_SINE)
+		
+	if anomaly_drone and anomaly_drone.playing:
+		if is_order_phase:
+			var tween_drone = create_tween()
+			tween_drone.tween_property(anomaly_drone, "volume_db", -80.0, 0.35)
+			tween_drone.tween_callback(anomaly_drone.stop)
 # ----------------------------------------------------
 			
 func _input(event: InputEvent) -> void:
