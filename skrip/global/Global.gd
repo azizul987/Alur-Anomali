@@ -11,6 +11,8 @@ var points: int = 0 # Menyimpan perolehan skor koin
 var is_order_phase: bool = true # True = Order (Tick), False = Disorder (Tock)
 var canvas_mod: CanvasModulate
 var shader_mat: ShaderMaterial
+var bgm_player: AudioStreamPlayer
+var sfx_transition: AudioStreamPlayer
 
 func _ready() -> void:
 	# 1. Pasang pengubah warna atmosfer dunia (CanvasModulate)
@@ -37,6 +39,25 @@ func _ready() -> void:
 	if ui_scene:
 		add_child(ui_scene.instantiate())
 
+	# 4. Pasang Sistem Musik Latar & Efek Suara (BGM & SFX) secara global
+	bgm_player = AudioStreamPlayer.new()
+	var music_stream = load("res://asset/brackeys_platformer_assets/music/time_for_adventure.mp3")
+	if music_stream:
+		if music_stream is AudioStreamMP3:
+			music_stream.loop = true # Putar tanpa henti abadi di latar belakang!
+		bgm_player.stream = music_stream
+		bgm_player.volume_db = -8.0 # Volume nyaman tidak berisik
+		bgm_player.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(bgm_player)
+		bgm_player.play()
+		
+	sfx_transition = AudioStreamPlayer.new()
+	var trans_stream = load("res://asset/brackeys_platformer_assets/sounds/power_up.wav")
+	if trans_stream:
+		sfx_transition.stream = trans_stream
+		sfx_transition.volume_db = -5.0
+		add_child(sfx_transition)
+
 func toggle_phase() -> void:
 	is_order_phase = not is_order_phase
 	if is_order_phase:
@@ -52,6 +73,16 @@ func toggle_phase() -> void:
 		shader_mat.set_shader_parameter("effect_strength", 1.0) # Pemicu gelombang glitch kejut
 		var tween_shader = create_tween()
 		tween_shader.tween_method(func(val): shader_mat.set_shader_parameter("effect_strength", val), 1.0, 0.0, 0.4).set_trans(Tween.TRANS_CUBIC)
+
+	# --- EFEK AUDIO TRANSISI (PITCH SHIFT & SFX) ---
+	if sfx_transition and sfx_transition.stream:
+		sfx_transition.pitch_scale = 1.1 if is_order_phase else 0.85
+		sfx_transition.play()
+		
+	if bgm_player:
+		var tween_audio = create_tween()
+		var target_pitch = 1.0 if is_order_phase else 0.84 # Order cerah ceria, Disorder agak merendah misterius
+		tween_audio.tween_property(bgm_player, "pitch_scale", target_pitch, 0.35).set_trans(Tween.TRANS_SINE)
 # ----------------------------------------------------
 			
 func _input(event: InputEvent) -> void:
@@ -73,3 +104,14 @@ func change_level(new_level: int, scene_path: String) -> void:
 
 func load_saved_scene() -> void:
 	SaveManager.load_game(true) # Argumen true memicu perpindahan scene jika berbeda dari yang tersimpan
+
+# --- HELPER EFEK SUARA (SFX) GLOBAL ---
+func play_sfx(sfx_path: String, vol_db: float = -4.0) -> void:
+	var stream = load(sfx_path)
+	if stream:
+		var sfx_player = AudioStreamPlayer.new()
+		sfx_player.stream = stream
+		sfx_player.volume_db = vol_db
+		add_child(sfx_player)
+		sfx_player.play()
+		sfx_player.finished.connect(sfx_player.queue_free)

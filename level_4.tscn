@@ -27,6 +27,7 @@ texture = ExtResource("2_tex2")
 7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:0/0 = 0
 8:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:1/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_lvl4"]
 physics_layer_0/collision_layer = 1
@@ -35,8 +36,25 @@ sources/2 = SubResource("TileSetAtlasSource_lvl4b")
 
 [node name="Level4" type="Node2D" unique_id=622395556]
 
+[node name="Checkpoints" type="Node2D" parent="." unique_id=401020370]
+
+[node name="CheckPoint1" parent="Checkpoints" unique_id=401020371 instance=ExtResource("7_chk")]
+position = Vector2(1100, -63)
+
+[node name="CheckPoint2" parent="Checkpoints" unique_id=401020372 instance=ExtResource("7_chk")]
+position = Vector2(2099, -94)
+
+[node name="CheckPoint3" parent="Checkpoints" unique_id=401020373 instance=ExtResource("7_chk")]
+position = Vector2(3349, -113)
+
+[node name="CheckPoint4" parent="Checkpoints" unique_id=401020374 instance=ExtResource("7_chk")]
+position = Vector2(4450, -153)
+
+[node name="CheckPoint5" parent="Checkpoints" unique_id=401020375 instance=ExtResource("7_chk")]
+position = Vector2(5551, -213)
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=401020301]
-tile_map_data = PackedByteArray("AAAAAAMAAQAAAAAAAAABAAMAAQAAAAAAAAACAAMAAQAAAAAAAAADAAMAAQAAAAAAAAAEAAMAAQAAAAAAAAAFAAMAAQAAAAAAAAAGAAMAAQAAAAAAAAAHAAMAAQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAFAAMAAgAHAAEAAAAGAAMAAgAHAAEAAAAHAAMAAgAHAAAAAACCAe//AgAHAAAAAACDAe//AgAHAAAAAACEAe//AgAHAAAAAACFAe//AgAHAAAAAACBAe//AgAHAAAAAAAJAAMAAgAHAAAAAAAIAAMAAgAHAAAAAAAGAAIAAgAHAAAAAAAFAAIAAgAHAAAAAAAEAAIAAgAHAAAAAAADAAIAAgAHAAAAAAACAAIAAgAHAAAAAAABAAIAAgAHAAAAAAAAAAIAAgAHAAAAAAD//wMAAgAHAAAAAAD+/wMAAgAHAAAAAAAAAAMAAgAHAAEAAAABAAMAAgAHAAEAAAACAAMAAgAHAAEAAAADAAMAAgAHAAEAAAAEAAMAAgAHAAEAAAAFAAQAAgAHAAEAAAAGAAQAAgAHAAEAAAAHAAQAAgAHAAEAAAAIAAQAAgAHAAEAAAAJAAQAAgAHAAEAAAAEAAQAAgAHAAEAAAADAAQAAgAHAAEAAAACAAQAAgAHAAEAAAABAAQAAgAHAAEAAAAAAAQAAgAHAAEAAAD//wQAAgAHAAEAAAD+/wQAAgAHAAEAAAD+/wUAAgAHAAEAAAD//wUAAgAHAAEAAAAAAAUAAgAHAAEAAAABAAUAAgAHAAEAAAACAAUAAgAHAAEAAAADAAUAAgAHAAEAAAAEAAUAAgAHAAEAAAAFAAUAAgAHAAEAAAAGAAUAAgAHAAEAAAAHAAUAAgAHAAEAAAAIAAUAAgAHAAEAAAAJAAUAAgAHAAEAAAA=")
 tile_set = SubResource("TileSet_lvl4")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=401020302]
@@ -172,23 +190,6 @@ position = Vector2(5950, -260)
 tipe_dropdown = 11
 conveyor_speed = 280.0
 is_treadmill_disorder = true
-
-[node name="Checkpoints" type="Node2D" parent="." unique_id=401020370]
-
-[node name="CheckPoint1" parent="Checkpoints" unique_id=401020371 instance=ExtResource("7_chk")]
-position = Vector2(1100, -80)
-
-[node name="CheckPoint2" parent="Checkpoints" unique_id=401020372 instance=ExtResource("7_chk")]
-position = Vector2(2100, -110)
-
-[node name="CheckPoint3" parent="Checkpoints" unique_id=401020373 instance=ExtResource("7_chk")]
-position = Vector2(3350, -130)
-
-[node name="CheckPoint4" parent="Checkpoints" unique_id=401020374 instance=ExtResource("7_chk")]
-position = Vector2(4450, -170)
-
-[node name="CheckPoint5" parent="Checkpoints" unique_id=401020375 instance=ExtResource("7_chk")]
-position = Vector2(5550, -230)
 
 [node name="Coins" type="Node2D" parent="." unique_id=401020380]
 

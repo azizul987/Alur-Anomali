@@ -27,8 +27,10 @@ func _on_body_entered(body: Node2D) -> void:
 			body.start_position = global_position
 		SaveManager.save_game()
 		
-		if has_node("Sound"):
-			$Sound.play()
+		if has_node("Sound") and get_node("Sound").stream != null:
+			get_node("Sound").play()
+		else:
+			Global.play_sfx("res://asset/brackeys_platformer_assets/sounds/power_up.wav", -4.0)
 		
 		# Ganti ke animasi bendera berkobar (10 frame di 64x64)
 		if active_texture:
