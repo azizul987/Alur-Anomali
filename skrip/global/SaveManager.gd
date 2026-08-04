@@ -123,7 +123,7 @@ func load_game(change_scene_if_different: bool = false) -> void:
 	
 	var saved_scene: String = data.get("scene_path", "res://scene/level1.tscn")
 	if change_scene_if_different and get_tree():
-		get_tree().change_scene_to_file(saved_scene)
+		Global.transition_to_scene(saved_scene)
 	#Point.point = float(data.get("point", 0))
 	#var cam_data:Dictionary=data.get("skill_tree_camera",{
 		#"x":0.0,

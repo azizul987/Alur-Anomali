@@ -18,6 +18,9 @@ var anomaly_drone: AudioStreamPlayer
 var sfx_button_click: AudioStreamPlayer
 var disorder_timer: float = 0.0 # Menghitung lama tinggal di mode non-normal (Disorder)
 var darkness_overlay: ColorRect # Overlay layar untuk menjamin efek semakin gelap pasti kelihatan nyata!
+var transition_layer: CanvasLayer
+var transition_rect: ColorRect
+var is_transitioning: bool = false
 
 signal reset_trap
 
@@ -91,6 +94,23 @@ func _ready() -> void:
 		sfx_button_click.volume_db = 2.0
 		sfx_button_click.process_mode = Node.PROCESS_MODE_ALWAYS # Agar tetap berbunyi saat game di-pause!
 		add_child(sfx_button_click)
+		
+	# 7. Pasang sistem transisi layar (Screen Fade Transition & Startup Boot)
+	transition_layer = CanvasLayer.new()
+	transition_layer.layer = 120 # Berada di atas segala elemen grafis dan UI
+	add_child(transition_layer)
+	
+	transition_rect = ColorRect.new()
+	transition_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	transition_rect.color = Color(0.04, 0.02, 0.08, 1.0) # Layar gelap mistis saat game baru boot
+	transition_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+	transition_layer.add_child(transition_rect)
+	
+	# Fade In halus saat start awal game dibuka!
+	var boot_tween = create_tween()
+	boot_tween.tween_interval(0.2) # Beri waktu render
+	boot_tween.tween_property(transition_rect, "color:a", 0.0, 0.7).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	boot_tween.tween_callback(func(): transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE)
 	
 	if get_tree():
 		get_tree().node_added.connect(_on_node_added)
@@ -203,7 +223,53 @@ func change_level(new_level: int, scene_path: String) -> void:
 	current_level = new_level
 	checkpoint_position = Vector2.ZERO # Reset posisi checkpoint saat masuk scene level baru
 	SaveManager.save_game()
-	get_tree().change_scene_to_file(scene_path)
+	transition_to_scene(scene_path)
+
+func transition_to_scene(scene_path: String) -> void:
+	if is_transitioning:
+		return
+	is_transitioning = true
+	
+	if transition_rect:
+		transition_rect.mouse_filter = Control.MOUSE_FILTER_STOP # Blokir input ganda selama transisi
+		var tween_out = create_tween()
+		tween_out.tween_property(transition_rect, "color:a", 1.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		tween_out.tween_callback(func():
+			get_tree().change_scene_to_file(scene_path)
+			var tween_in = create_tween()
+			tween_in.tween_interval(0.1) # Jeda pemuatan scene baru
+			tween_in.tween_property(transition_rect, "color:a", 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween_in.tween_callback(func():
+				transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				is_transitioning = false
+			)
+		)
+	else:
+		get_tree().change_scene_to_file(scene_path)
+		is_transitioning = false
+
+func reload_scene() -> void:
+	if is_transitioning:
+		return
+	is_transitioning = true
+	
+	if transition_rect:
+		transition_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+		var tween_out = create_tween()
+		tween_out.tween_property(transition_rect, "color:a", 1.0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		tween_out.tween_callback(func():
+			get_tree().reload_current_scene()
+			var tween_in = create_tween()
+			tween_in.tween_interval(0.1)
+			tween_in.tween_property(transition_rect, "color:a", 0.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween_in.tween_callback(func():
+				transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				is_transitioning = false
+			)
+		)
+	else:
+		get_tree().reload_current_scene()
+		is_transitioning = false
 
 func load_saved_scene() -> void:
 	SaveManager.load_game(true) # Argumen true memicu perpindahan scene jika berbeda dari yang tersimpan

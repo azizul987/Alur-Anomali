@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 	btn_new.pressed.connect(func():
 		Global.reset_game_state()
-		get_tree().change_scene_to_file("res://scene/level1.tscn")
+		Global.transition_to_scene("res://scene/level1.tscn")
 	)
 	btn_exit.pressed.connect(func(): get_tree().quit())
 	

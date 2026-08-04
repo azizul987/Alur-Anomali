@@ -18,12 +18,12 @@ func _ready() -> void:
 	points_label.text = "TOTAL KOIN: %d" % Global.points
 	
 	btn_menu.pressed.connect(func():
-		get_tree().change_scene_to_file("res://scene/main_menu.tscn")
+		Global.transition_to_scene("res://scene/main_menu.tscn")
 	)
 	
 	btn_restart.pressed.connect(func():
 		Global.reset_game_state()
-		get_tree().change_scene_to_file("res://scene/level1.tscn")
+		Global.transition_to_scene("res://scene/level1.tscn")
 	)
 	
 	# Efek hover elastis (micro-animation)

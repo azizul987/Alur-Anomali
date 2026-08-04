@@ -85,7 +85,7 @@ func setup_pause_menu() -> void:
 	btn_restart.pressed.connect(func():
 		Global.play_sfx("res://asset/brackeys_platformer_assets/sounds/tap.wav")
 		set_paused_state(false)
-		get_tree().reload_current_scene()
+		Global.reload_scene()
 	)
 	vbox.add_child(btn_restart)
 	
@@ -95,7 +95,7 @@ func setup_pause_menu() -> void:
 		Global.play_sfx("res://asset/brackeys_platformer_assets/sounds/tap.wav")
 		set_paused_state(false)
 		SaveManager.save_game()
-		get_tree().change_scene_to_file("res://scene/main_menu.tscn")
+		Global.transition_to_scene("res://scene/main_menu.tscn")
 	)
 	vbox.add_child(btn_menu)
 
